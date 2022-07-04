@@ -6,50 +6,35 @@ namespace FootballPredictor
 {
     class Team
     {    
-        public String name;
-        public double averageScorePerMatchWorldCup2018;
-        public String startingGroup;
+        public string name;
+        public int qualifierRank2022;
+        public string startingGroup;
         public int groupPlayScore;
         public int goalsScored;
         public int goalsConceded;
         public double goalAverage;
 
-        
 
-        public Team(String teamName, double avgScorePerMatch, String startingGroup)
+
+        public Team(string teamName, int qualifierRank2022, string startingGroup)
         {
             name = teamName;
-            averageScorePerMatchWorldCup2018 = avgScorePerMatch;
+            this.qualifierRank2022 = qualifierRank2022;
             this.startingGroup = startingGroup;
             groupPlayScore = 0;
             goalsScored = 0;
             goalsConceded = 0;
+            goalAverage = 0;
 
-        }
+        }    
 
-        public void logMatchResults(Match match)
+        public void logMatchResults(int scoredGoals, int concededGoals, int matchScore)
         {
-            var team1 = match.team1;
-            var team2 = match.team2;          
-
-            var team1Score = match.scoreTeam1;
-            var team2score = match.scoreTeam2;
-
-            if (name.Equals(team1.name))
-            {
-                logMatchGoals(team1Score, team2score);
-            }
-            else if (name.Equals(team2.name))
-            {
-                logMatchGoals(team2score, team1Score);
-            }
-        }
-
-        public void logMatchGoals(int scoredGoals, int concededGoals)
-        {
-            goalsScored = scoredGoals;
-            goalsConceded = concededGoals;
-        }
+            goalsScored += scoredGoals;
+            goalsConceded += concededGoals;
+            groupPlayScore += matchScore;
+            calculateGoalAverage();
+        }        
 
         public void calculateGoalAverage()
         {
