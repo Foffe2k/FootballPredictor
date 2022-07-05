@@ -6,7 +6,7 @@ namespace FootballPredictor
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            WorldCup uefa2022 = new WorldCup();
         }
 
     

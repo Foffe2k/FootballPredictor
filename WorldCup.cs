@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace FootballPredictor
 {
@@ -29,10 +30,7 @@ namespace FootballPredictor
             RegisterCompetingTeams();
             RegisterGroupPlayMatches();
 
-            ResolveGroup("A");
-            ResolveGroup("B");
-            ResolveGroup("C");
-            ResolveGroup("D");
+            ResolveGroupPlay(listOfTeams);
             
         }
 
@@ -113,15 +111,58 @@ namespace FootballPredictor
             });
         }
 
-        public void ResolveGroup(string group)
+        public void ResolveGroupPlay(List<Team> teamRoster)
         {
+            List<Team> groupA = PopulateGroup(teamRoster, "groupA");
+            List<Team> groupB = PopulateGroup(teamRoster, "groupB");
+            List<Team> groupC = PopulateGroup(teamRoster, "groupC");
+            List<Team> groupD = PopulateGroup(teamRoster, "groupD");
+
+            Team winnerGroupA = FindWinner(groupA);
+            Team winnerGroupB = FindWinner(groupB);
+            Team winnerGroupC = FindWinner(groupC);
+            Team winnerGroupD = FindWinner(groupD);
+
+            Team runnerUpGroupA = FindRunnerUp(groupA);
+            Team runnerUpGroupB = FindRunnerUp(groupB);
+            Team runnerUpGroupC = FindRunnerUp(groupC);
+            Team runnerUpGroupD = FindRunnerUp(groupD);
+
+
 
         }
 
-        public void ResolveMatch()
+        public List<Team> PopulateGroup(List<Team> teamRoster, string group)
         {
+            List<Team> result = new List<Team>();
 
+            foreach (Team team in teamRoster)
+            {
+                if (team.startingGroup.Equals(group))
+                {
+                    result.Add(team);
+                }
+            }
+
+            return result;
         }
+
+        public Team FindWinner(List<Team> group)
+        {          
+
+            group.OrderByDescending(t => t.groupPlayScore).ToList(); //TODO: Kolla så att det inte finns fler som har samma poäng
+
+            return group[0];
+        }
+
+        public Team FindRunnerUp(List<Team> group)
+        {
+            Team runnerUp;
+
+
+            return runnerUp;
+        }
+
 
 
 

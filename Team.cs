@@ -14,8 +14,6 @@ namespace FootballPredictor
         public int goalsConceded;
         public double goalAverage;
 
-
-
         public Team(string teamName, int qualifierRank2022, string startingGroup)
         {
             name = teamName;
@@ -26,19 +24,14 @@ namespace FootballPredictor
             goalsConceded = 0;
             goalAverage = 0;
 
-        }    
-
-        public void logMatchResults(int scoredGoals, int concededGoals, int matchScore)
-        {
-            goalsScored += scoredGoals;
-            goalsConceded += concededGoals;
-            groupPlayScore += matchScore;
-            calculateGoalAverage();
-        }        
+        }                      
 
         public void calculateGoalAverage()
         {
-            goalAverage = goalsScored / goalsConceded;
+            if(goalsScored > 0 && goalsConceded > 0)
+            {
+                goalAverage = goalsScored / goalsConceded;
+            }
         }
             
       
