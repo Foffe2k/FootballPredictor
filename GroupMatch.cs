@@ -246,5 +246,12 @@ namespace FootballPredictor
             team1.calculateGoalAverage();
             team2.calculateGoalAverage();
         }
+
+        public int getTeamScore(List<TeamScore> matchResults, string teamName)
+        {
+            TeamScore team = matchResults.Single(r => r.team.name.Equals(teamName));
+
+            return team.score;
+        }
     }
 }

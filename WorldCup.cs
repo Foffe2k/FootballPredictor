@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace FootballPredictor
 {
@@ -10,10 +12,6 @@ namespace FootballPredictor
         private List<Team> listOfTeams;
         private List<GroupMatch> listOfMatches;
 
-        //private List<Team> groupA;
-        //private List<Team> groupB;
-        //private List<Team> groupC;
-        //private List<Team> groupD;
         private FinalsMatch quarterFinals1;
         private FinalsMatch quarterFinals2;
         private FinalsMatch quarterFinals3;
@@ -22,25 +20,49 @@ namespace FootballPredictor
         private FinalsMatch semiFinals2;
         private FinalsMatch finals;
 
-        Team winnerGroupA;
-        Team winnerGroupB;
-        Team winnerGroupC;
-        Team winnerGroupD;
+        private Team winnerGroupA;
+        private Team winnerGroupB;
+        private Team winnerGroupC;
+        private Team winnerGroupD;
+        
+        private Team runnerUpGroupA;
+        private Team runnerUpGroupB;
+        private Team runnerUpGroupC;
+        private Team runnerUpGroupD;
 
-        Team runnerUpGroupA;
-        Team runnerUpGroupB;
-        Team runnerUpGroupC;
-        Team runnerUpGroupD;
+        private ResultsPrinter resultsPrinter;
+
 
         public WorldCup()
         {
             listOfTeams = new List<Team>();
             listOfMatches = new List<GroupMatch>();
+            resultsPrinter = new ResultsPrinter();
             
             RegisterCompetingTeams();
             RegisterGroupPlayMatches();
             ResolveGroupPlay(listOfTeams);
+            RegisterQuarterFinals();
             RegisterSemiFinals();
+            RegisterFinals();
+
+            resultsPrinter.FormatGroupMatches(listOfMatches, "groupA");
+            resultsPrinter.FormatGroupMatches(listOfMatches, "groupB");
+            resultsPrinter.FormatGroupMatches(listOfMatches, "groupC");
+            resultsPrinter.FormatGroupMatches(listOfMatches, "groupD");
+
+            resultsPrinter.FormatFinalsMatches(quarterFinals1, "Kvartsfinal 1");
+            resultsPrinter.FormatFinalsMatches(quarterFinals2, "Kvartsfinal 2");
+            resultsPrinter.FormatFinalsMatches(quarterFinals3, "Kvartsfinal 3");
+            resultsPrinter.FormatFinalsMatches(quarterFinals4, "Kvartsfinal 4");
+
+            resultsPrinter.FormatFinalsMatches(semiFinals1, "Semifinal 1");
+            resultsPrinter.FormatFinalsMatches(semiFinals2, "Semifinal 2");
+            
+            resultsPrinter.FormatFinalsMatches(finals, "Final");
+            resultsPrinter.FormatWinner(finals);
+
+            _ = resultsPrinter.PrintResults();
             
         }
 
@@ -149,17 +171,26 @@ namespace FootballPredictor
             return group[1];
         }
 
-        public void RegisterSemiFinals()
+        public void RegisterQuarterFinals()
         {
             quarterFinals1 = new FinalsMatch(winnerGroupA, runnerUpGroupB, "QF1");
-            quarterFinals2 = new FinalsMatch(winnerGroupC, runnerUpGroupD, "QF2");
-            quarterFinals3 = new FinalsMatch(winnerGroupB, runnerUpGroupA, "QF3");
+            quarterFinals2 = new FinalsMatch(winnerGroupB, runnerUpGroupA, "QF2");
+            quarterFinals3 = new FinalsMatch(winnerGroupC, runnerUpGroupD, "QF3");
             quarterFinals4 = new FinalsMatch(winnerGroupD, runnerUpGroupC, "QF4");
-
         }
 
+        public void RegisterSemiFinals()
+        {
+            semiFinals1 = new FinalsMatch(quarterFinals1.winningTeam, quarterFinals3.winningTeam, "SF1");
+            semiFinals2 = new FinalsMatch(quarterFinals2.winningTeam, quarterFinals4.winningTeam, "SF2");
+        }
 
+        public void RegisterFinals()
+        {
+            finals = new FinalsMatch(semiFinals1.winningTeam, semiFinals2.winningTeam, "Final");
+        }
 
+    
 
 
         /*

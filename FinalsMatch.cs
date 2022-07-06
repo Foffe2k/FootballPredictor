@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FootballPredictor
@@ -21,6 +22,7 @@ namespace FootballPredictor
             this.team1 = team1;
             this.team2 = team2;
             this.matchName = matchName;
+            matchResults = new List<TeamScore>();   
             calculateGoalsByTeam(team1, matchResults);
             calculateGoalsByTeam(team2, matchResults);
             calculateWinner(matchResults);
@@ -99,6 +101,12 @@ namespace FootballPredictor
             }
 
             return false;
+        }
+        public int getTeamScore(List<TeamScore> matchResults, string teamName)
+        {
+            TeamScore team = matchResults.Single(r => r.team.name.Equals(teamName));
+
+            return team.score;
         }
     }
 }
