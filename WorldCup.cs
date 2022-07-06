@@ -22,6 +22,16 @@ namespace FootballPredictor
         private List<GroupMatch> semiFinals2;
         private List<GroupMatch> finals;
 
+        Team winnerGroupA;
+        Team winnerGroupB;
+        Team winnerGroupC;
+        Team winnerGroupD;
+
+        Team runnerUpGroupA;
+        Team runnerUpGroupB;
+        Team runnerUpGroupC;
+        Team runnerUpGroupD;
+
         public WorldCup()
         {
             listOfTeams = new List<Team>();
@@ -118,15 +128,15 @@ namespace FootballPredictor
             List<Team> groupC = PopulateGroup(teamRoster, "groupC");
             List<Team> groupD = PopulateGroup(teamRoster, "groupD");
 
-            Team winnerGroupA = FindWinner(groupA);
-            Team winnerGroupB = FindWinner(groupB);
-            Team winnerGroupC = FindWinner(groupC);
-            Team winnerGroupD = FindWinner(groupD);
+            winnerGroupA = FindWinner(groupA);
+            winnerGroupB = FindWinner(groupB);
+            winnerGroupC = FindWinner(groupC);
+            winnerGroupD = FindWinner(groupD);
 
-            Team runnerUpGroupA = FindRunnerUp(groupA);
-            Team runnerUpGroupB = FindRunnerUp(groupB);
-            Team runnerUpGroupC = FindRunnerUp(groupC);
-            Team runnerUpGroupD = FindRunnerUp(groupD);
+            runnerUpGroupA = FindRunnerUp(groupA);
+            runnerUpGroupB = FindRunnerUp(groupB);
+            runnerUpGroupC = FindRunnerUp(groupC);
+            runnerUpGroupD = FindRunnerUp(groupD);
 
 
 
@@ -148,12 +158,108 @@ namespace FootballPredictor
         }
 
         public Team FindWinner(List<Team> group)
-        {          
+        {
+            List<Team> groupList = group.OrderByDescending(t => t.groupPlayScore).ToList();
 
-            group.OrderByDescending(t => t.groupPlayScore).ToList(); //TODO: Kolla så att det inte finns fler som har samma poäng
+            int highestGroupPlayScore = groupList[0].groupPlayScore;
 
-            return group[0];
+            if (groupPlayScoreIsTied(groupList))
+            {
+                List<Team> tiedTeams = new List<Team>();
+                
+                foreach (Team team in groupList)
+                {
+                    if(team.groupPlayScore == highestGroupPlayScore)
+                    {
+                        tiedTeams.Add(team);
+                    }
+                }
+
+                return groupPlayTiebreaker(tiedTeams);
+            }
+            else
+            {
+                return group[0];
+            }   
         }
+
+        public bool groupPlayScoreIsTied(List<Team> group)
+        {
+            List<Team> groupList = group.OrderByDescending(t => t.groupPlayScore).ToList();
+
+            if (groupList[0].groupPlayScore == groupList[1].groupPlayScore)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public Team groupPlayTiebreaker(List<Team> tiedTeamsGroupPlay) //Ska skicka tillbaka det bästa laget av de lag som delar bäst gruppspelspoäng
+        {
+            int bestGoalDifference = 0;
+            Team bestTeam = new Team("Tiebreaker", 99, "Ö");
+
+            if (goalDifferenceIsTied(tiedTeamsGroupPlay)) //Om den största målskillnaden innehas av flera lag
+            {
+                List<Team> groupList = tiedTeamsGroupPlay.OrderByDescending(t => t.goalsScored).ToList();
+
+                int mostGoalsScored = groupList[0].goalsScored;
+
+                List<Team> tiedTeamsGoalsScored = new List<Team>();
+                
+                foreach (Team team in groupList)
+                {
+                    if(team.goalsScored == mostGoalsScored)
+                    {
+                        tiedTeamsGoalsScored.Add(team);
+                    }
+                }
+
+                return goalsScoredTiebreaker(tiedTeamsGoalsScored);
+
+            }
+            else
+            {
+                foreach (Team team in tiedTeamsGroupPlay)
+                {
+                    int goalDifference = team.calculateGoalDifference();
+
+                    if (goalDifference > bestGoalDifference || bestGoalDifference == 0)
+                    {
+                        bestGoalDifference = goalDifference;
+                        bestTeam = team;
+                    }   
+                }
+
+                return bestTeam;
+            }
+
+        }
+
+        public Team goalsScoredTiebreaker(List<Team> tiedTeams)
+        {
+            tiedTeams.OrderByDescending(t => t.qualifierRank2022).ToList();
+
+            return tiedTeams[0];
+        }
+
+        public bool goalDifferenceIsTied(List<Team> group)
+        {
+            List<Team> groupList = group.OrderByDescending(t => t.calculateGoalDifference()).ToList();
+
+            if (groupList[0].groupPlayScore == groupList[1].groupPlayScore)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         public Team FindRunnerUp(List<Team> group)
         {
@@ -163,6 +269,9 @@ namespace FootballPredictor
             return runnerUp;
         }
 
+ 
+
+       
 
 
 
