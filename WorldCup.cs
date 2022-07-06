@@ -46,6 +46,7 @@ namespace FootballPredictor
             RegisterSemiFinals();
             RegisterFinals();
 
+            //TODO: Flytta all logik nedanför till ResultsPrinterklassen. Skicka med det som behövs i construktorn. Kanske gå över till statiska metoder igen?
             resultsPrinter.FormatGroupMatches(listOfMatches, "groupA");
             resultsPrinter.FormatGroupMatches(listOfMatches, "groupB");
             resultsPrinter.FormatGroupMatches(listOfMatches, "groupC");
