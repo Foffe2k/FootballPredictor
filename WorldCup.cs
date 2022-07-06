@@ -14,13 +14,13 @@ namespace FootballPredictor
         //private List<Team> groupB;
         //private List<Team> groupC;
         //private List<Team> groupD;
-        private List<GroupMatch> quarterFinals1;
-        private List<GroupMatch> quarterFinals2;
-        private List<GroupMatch> quarterFinals3;
-        private List<GroupMatch> quarterFinals4;
-        private List<GroupMatch> semiFinals1;
-        private List<GroupMatch> semiFinals2;
-        private List<GroupMatch> finals;
+        private FinalsMatch quarterFinals1;
+        private FinalsMatch quarterFinals2;
+        private FinalsMatch quarterFinals3;
+        private FinalsMatch quarterFinals4;
+        private FinalsMatch semiFinals1;
+        private FinalsMatch semiFinals2;
+        private FinalsMatch finals;
 
         Team winnerGroupA;
         Team winnerGroupB;
@@ -39,8 +39,8 @@ namespace FootballPredictor
             
             RegisterCompetingTeams();
             RegisterGroupPlayMatches();
-
             ResolveGroupPlay(listOfTeams);
+            RegisterSemiFinals();
             
         }
 
@@ -64,26 +64,7 @@ namespace FootballPredictor
                 new Team("Italien", 11, "groupD"),
                 new Team("Belgien", 9, "groupD"),
                 new Team("Island", 12, "groupD"),
-        });
-
-            /*
-            var team01 = new Team("England", 1, "groupA");
-            var team02 = new Team("Norge", 1, "groupA");
-            var team03 = new Team("Österrike", 1, "groupA");
-            var team04 = new Team("Nordirland", 1, "groupA");
-            var team05 = new Team("Tyskland", 1, "groupB");
-            var team06 = new Team("Spanien", 1, "groupB");
-            var team07 = new Team("Danmark", 1, "groupB");
-            var team08 = new Team("Finland", 1, "groupB");
-            var team09 = new Team("Nederländerna", 1, "groupC");
-            var team10 = new Team("Sverige", 1, "groupC");
-            var team11 = new Team("Portugal", 1, "groupC");
-            var team12 = new Team("Schweiz", 1, "groupC");
-            var team13 = new Team("Frankrike", 1, "groupD");
-            var team14 = new Team("Italien", 1, "groupD");
-            var team15 = new Team("Belgien", 1, "groupD");
-            var team16 = new Team("Island", 1, "groupD");
-            */  
+            }); 
         }
 
         public void RegisterGroupPlayMatches()
@@ -128,18 +109,15 @@ namespace FootballPredictor
             List<Team> groupC = PopulateGroup(teamRoster, "groupC");
             List<Team> groupD = PopulateGroup(teamRoster, "groupD");
 
-            winnerGroupA = FindWinner(groupA);
-            winnerGroupB = FindWinner(groupB);
-            winnerGroupC = FindWinner(groupC);
-            winnerGroupD = FindWinner(groupD);
+            winnerGroupA = FindWinnerLinq(groupA);
+            winnerGroupB = FindWinnerLinq(groupB);
+            winnerGroupC = FindWinnerLinq(groupC);
+            winnerGroupD = FindWinnerLinq(groupD);
 
-            runnerUpGroupA = FindRunnerUp(groupA);
-            runnerUpGroupB = FindRunnerUp(groupB);
-            runnerUpGroupC = FindRunnerUp(groupC);
-            runnerUpGroupD = FindRunnerUp(groupD);
-
-
-
+            runnerUpGroupA = FindRunnerUpLinq(groupA);
+            runnerUpGroupB = FindRunnerUpLinq(groupB);
+            runnerUpGroupC = FindRunnerUpLinq(groupC);
+            runnerUpGroupD = FindRunnerUpLinq(groupD);
         }
 
         public List<Team> PopulateGroup(List<Team> teamRoster, string group)
@@ -157,6 +135,37 @@ namespace FootballPredictor
             return result;
         }
 
+        public Team FindWinnerLinq(List<Team> group)
+        {
+            group.OrderBy(x => x.groupPlayScore).ThenBy(x => x.calculateGoalDifference()).ThenBy(x => x.qualifierRank2022);
+
+            return group[0];
+        }
+
+        public Team FindRunnerUpLinq(List<Team> group)
+        {
+            group.OrderBy(x => x.groupPlayScore).ThenBy(x => x.calculateGoalDifference()).ThenBy(x => x.qualifierRank2022);
+
+            return group[1];
+        }
+
+        public void RegisterSemiFinals()
+        {
+            quarterFinals1 = new FinalsMatch(winnerGroupA, runnerUpGroupB, "QF1");
+            quarterFinals2 = new FinalsMatch(winnerGroupC, runnerUpGroupD, "QF2");
+            quarterFinals3 = new FinalsMatch(winnerGroupB, runnerUpGroupA, "QF3");
+            quarterFinals4 = new FinalsMatch(winnerGroupD, runnerUpGroupC, "QF4");
+
+        }
+
+
+
+
+
+        /*
+        
+        //An ode to wasted effort
+        
         public Team FindWinner(List<Team> group)
         {
             List<Team> groupList = group.OrderByDescending(t => t.groupPlayScore).ToList();
@@ -263,15 +272,17 @@ namespace FootballPredictor
 
         public Team FindRunnerUp(List<Team> group)
         {
-            Team runnerUp;
-
+            Team runnerUp = new Team("Fake", 98, "Ö");
 
             return runnerUp;
         }
+        */
 
- 
 
-       
+
+
+
+
 
 
 
