@@ -54,11 +54,8 @@ namespace FootballPredictor
             int t1Score = finalsMatch.getTeamScore(finalsMatch.matchResults, t1Name);
             int t2Score = finalsMatch.getTeamScore(finalsMatch.matchResults, t2Name);
 
-
             formattedFinalsString += "--" + matchName + "--\n";
             formattedFinalsString += t1Name + " - " + t2Name + " : " + t1Score + " - " + t2Score + "\n";
-            
-
             formattedFinalsString += "\n";
 
             formattedOutMessage += formattedFinalsString;
