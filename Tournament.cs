@@ -7,7 +7,7 @@ using System.IO;
 
 namespace FootballPredictor
 {
-    class WorldCup
+    class Tournament
     {
         private List<Team> listOfTeams;
         private List<GroupMatch> listOfMatches;
@@ -33,7 +33,7 @@ namespace FootballPredictor
         private ResultsPrinter resultsPrinter;
 
 
-        public WorldCup()
+        public Tournament()
         {
             listOfTeams = new List<Team>();
             listOfMatches = new List<GroupMatch>();
@@ -45,25 +45,10 @@ namespace FootballPredictor
             RegisterQuarterFinals();
             RegisterSemiFinals();
             RegisterFinals();
+            FormatTournamentResultsForPrinting();
+            PrintTournamentResultsToFile("TournamentResults");
 
-            //TODO: Flytta all logik nedanför till ResultsPrinterklassen. Skicka med det som behövs i construktorn. Kanske gå över till statiska metoder igen?
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupA");
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupB");
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupC");
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupD");
-
-            resultsPrinter.FormatFinalsMatches(quarterFinals1, "Kvartsfinal 1");
-            resultsPrinter.FormatFinalsMatches(quarterFinals2, "Kvartsfinal 2");
-            resultsPrinter.FormatFinalsMatches(quarterFinals3, "Kvartsfinal 3");
-            resultsPrinter.FormatFinalsMatches(quarterFinals4, "Kvartsfinal 4");
-
-            resultsPrinter.FormatFinalsMatches(semiFinals1, "Semifinal 1");
-            resultsPrinter.FormatFinalsMatches(semiFinals2, "Semifinal 2");
             
-            resultsPrinter.FormatFinalsMatches(finals, "Final");
-            resultsPrinter.FormatWinner(finals);
-
-            _ = resultsPrinter.PrintResults();
             
         }
 
@@ -191,132 +176,32 @@ namespace FootballPredictor
             finals = new FinalsMatch(semiFinals1.winningTeam, semiFinals2.winningTeam, "Final");
         }
 
-    
+        public void FormatTournamentResultsForPrinting()
+        {
+            resultsPrinter.FormatGroupMatches(listOfMatches, "groupA");
+            resultsPrinter.FormatGroupMatches(listOfMatches, "groupB");
+            resultsPrinter.FormatGroupMatches(listOfMatches, "groupC");
+            resultsPrinter.FormatGroupMatches(listOfMatches, "groupD");
 
+            resultsPrinter.FormatFinalsMatches(quarterFinals1, "Kvartsfinal 1");
+            resultsPrinter.FormatFinalsMatches(quarterFinals2, "Kvartsfinal 2");
+            resultsPrinter.FormatFinalsMatches(quarterFinals3, "Kvartsfinal 3");
+            resultsPrinter.FormatFinalsMatches(quarterFinals4, "Kvartsfinal 4");
 
-        /*
+            resultsPrinter.FormatFinalsMatches(semiFinals1, "Semifinal 1");
+            resultsPrinter.FormatFinalsMatches(semiFinals2, "Semifinal 2");
+
+            resultsPrinter.FormatFinalsMatches(finals, "Final");
+            resultsPrinter.FormatWinner(finals);
+        }
+
+        public void PrintTournamentResultsToFile(string fileName)
+        {
+            _ = resultsPrinter.PrintResultsToFile(fileName);
+        }
+
         
-        //An ode to wasted effort
+
         
-        public Team FindWinner(List<Team> group)
-        {
-            List<Team> groupList = group.OrderByDescending(t => t.groupPlayScore).ToList();
-
-            int highestGroupPlayScore = groupList[0].groupPlayScore;
-
-            if (groupPlayScoreIsTied(groupList))
-            {
-                List<Team> tiedTeams = new List<Team>();
-                
-                foreach (Team team in groupList)
-                {
-                    if(team.groupPlayScore == highestGroupPlayScore)
-                    {
-                        tiedTeams.Add(team);
-                    }
-                }
-
-                return groupPlayTiebreaker(tiedTeams);
-            }
-            else
-            {
-                return group[0];
-            }   
-        }
-
-        public bool groupPlayScoreIsTied(List<Team> group)
-        {
-            List<Team> groupList = group.OrderByDescending(t => t.groupPlayScore).ToList();
-
-            if (groupList[0].groupPlayScore == groupList[1].groupPlayScore)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public Team groupPlayTiebreaker(List<Team> tiedTeamsGroupPlay) //Ska skicka tillbaka det bästa laget av de lag som delar bäst gruppspelspoäng
-        {
-            int bestGoalDifference = 0;
-            Team bestTeam = new Team("Tiebreaker", 99, "Ö");
-
-            if (goalDifferenceIsTied(tiedTeamsGroupPlay)) //Om den största målskillnaden innehas av flera lag
-            {
-                List<Team> groupList = tiedTeamsGroupPlay.OrderByDescending(t => t.goalsScored).ToList();
-
-                int mostGoalsScored = groupList[0].goalsScored;
-
-                List<Team> tiedTeamsGoalsScored = new List<Team>();
-                
-                foreach (Team team in groupList)
-                {
-                    if(team.goalsScored == mostGoalsScored)
-                    {
-                        tiedTeamsGoalsScored.Add(team);
-                    }
-                }
-
-                return goalsScoredTiebreaker(tiedTeamsGoalsScored);
-
-            }
-            else
-            {
-                foreach (Team team in tiedTeamsGroupPlay)
-                {
-                    int goalDifference = team.calculateGoalDifference();
-
-                    if (goalDifference > bestGoalDifference || bestGoalDifference == 0)
-                    {
-                        bestGoalDifference = goalDifference;
-                        bestTeam = team;
-                    }   
-                }
-
-                return bestTeam;
-            }
-
-        }
-
-        public Team goalsScoredTiebreaker(List<Team> tiedTeams)
-        {
-            tiedTeams.OrderByDescending(t => t.qualifierRank2022).ToList();
-
-            return tiedTeams[0];
-        }
-
-        public bool goalDifferenceIsTied(List<Team> group)
-        {
-            List<Team> groupList = group.OrderByDescending(t => t.calculateGoalDifference()).ToList();
-
-            if (groupList[0].groupPlayScore == groupList[1].groupPlayScore)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
-        public Team FindRunnerUp(List<Team> group)
-        {
-            Team runnerUp = new Team("Fake", 98, "Ö");
-
-            return runnerUp;
-        }
-        */
-
-
-
-
-
-
-
-
-
     }
 }

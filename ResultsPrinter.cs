@@ -9,14 +9,9 @@ namespace FootballPredictor
 {
     class ResultsPrinter
     {
+        private const string ACCEPTED_FILE_EXTENSION = ".txt";
+        
         private string formattedOutMessage = "";
-                    
-        public async Task PrintResults()
-        {
-            string text = formattedOutMessage;
-
-            await File.WriteAllTextAsync("WriteText.txt", text);
-        }
 
         public void FormatGroupMatches(List<GroupMatch> listOfMatches, string groupName)
         {            
@@ -74,13 +69,13 @@ namespace FootballPredictor
         }
 
 
-        public List<GroupMatch> SortGroupMatches(List<GroupMatch> listOfMatches, string groupID)
+        private List<GroupMatch> SortGroupMatches(List<GroupMatch> listOfMatches, string groupID)
         {
             List<GroupMatch> matches = new List<GroupMatch>();
 
             foreach (GroupMatch match in listOfMatches)
             {
-                if (IsPartOfGroup(match, groupID))
+                if (MatchIsPartOfCurrentGroup(match, groupID))
                 {
                     matches.Add(match);
                 }
@@ -88,7 +83,7 @@ namespace FootballPredictor
             return matches;
         }
 
-        public bool IsPartOfGroup(GroupMatch match, string groupID)
+        private bool MatchIsPartOfCurrentGroup(GroupMatch match, string groupID)
         {
             if (match.matchName.Equals("GP" + groupID + "1") ||
                 match.matchName.Equals("GP" + groupID + "2") ||
@@ -102,6 +97,63 @@ namespace FootballPredictor
             return false;
         }
 
+        public async Task PrintResultsToFile(string fileName)
+        {
+            string textToBePrintedtext = formattedOutMessage;
+
+            string proposedFileName = fileName;
+
+            if (fileNameHasCorrectFileExtension(proposedFileName))
+            {
+                await File.WriteAllTextAsync(proposedFileName, textToBePrintedtext);
+
+            }
+            else if (fileNameHasIncorrectFileExtension(proposedFileName))
+            {
+                string revisedFileName = changeToCorrectFileExtension(fileName);
+
+                PrintResultsToFile(revisedFileName);
+            }
+            else
+            {
+                string revisedFileName = addCorrectFileExtension(fileName);
+
+                PrintResultsToFile(revisedFileName);
+            }
+
+        }
+
         
+        private bool fileNameHasCorrectFileExtension(string fileName)
+        {
+
+
+            return true;
+        }
+
+        private bool fileNameHasIncorrectFileExtension(string fileName)
+        {
+
+            return true;
+        }
+
+        private string changeToCorrectFileExtension(string fileName)
+        {
+            string adjustedFileName;
+
+
+
+            return adjustedFileName;
+        }
+
+        private string addCorrectFileExtension(string fileName)
+        {
+            string adjustedFileName;
+
+
+
+            return adjustedFileName;
+        }
+
     }
 }

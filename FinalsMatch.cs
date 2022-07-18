@@ -34,12 +34,12 @@ namespace FootballPredictor
             Random random = new Random();
 
             scoredGoals += random.Next(0, 2);
-            scoredGoals += adjustForFate(random);
+            scoredGoals += randomlyAddAddtionalGoals(random);
 
             matchResult.Add(new TeamScore(scoredGoals, team));
         }
 
-        public int adjustForFate(Random random)
+        public int randomlyAddAddtionalGoals(Random random)
         {
             int fate = random.Next(0, 100);
 

@@ -6,7 +6,7 @@ namespace FootballPredictor
     {
         static void Main(string[] args)
         {
-            WorldCup uefa2022 = new WorldCup();
+            Tournament uefa2022 = new Tournament();
         }
 
     
