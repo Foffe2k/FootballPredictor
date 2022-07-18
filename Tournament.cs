@@ -45,55 +45,7 @@ namespace FootballPredictor
             RegisterSemiFinals();
             RegisterFinals();
             FormatTournamentResultsForPrinting();
-            PrintTournamentResultsToFile("TournamentResults");
-
-            
-            
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupD");
-
-            resultsPrinter.FormatFinalsMatches(quarterFinals1, "Kvartsfinal 1");
-            resultsPrinter.FormatFinalsMatches(quarterFinals2, "Kvartsfinal 2");
-            resultsPrinter.FormatFinalsMatches(quarterFinals3, "Kvartsfinal 3");
-            resultsPrinter.FormatFinalsMatches(quarterFinals4, "Kvartsfinal 4");
-
-            resultsPrinter.FormatFinalsMatches(semiFinals1, "Semifinal 1");
-            resultsPrinter.FormatFinalsMatches(semiFinals2, "Semifinal 2");
-            
-            resultsPrinter.FormatFinalsMatches(finals, "Final");
-            resultsPrinter.FormatWinner(finals);
-
-            _ = resultsPrinter.PrintResults();
-            
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupD");
-
-            resultsPrinter.FormatFinalsMatches(quarterFinals1, "Kvartsfinal 1");
-            resultsPrinter.FormatFinalsMatches(quarterFinals2, "Kvartsfinal 2");
-            resultsPrinter.FormatFinalsMatches(quarterFinals3, "Kvartsfinal 3");
-            resultsPrinter.FormatFinalsMatches(quarterFinals4, "Kvartsfinal 4");
-
-            resultsPrinter.FormatFinalsMatches(semiFinals1, "Semifinal 1");
-            resultsPrinter.FormatFinalsMatches(semiFinals2, "Semifinal 2");
-            
-            resultsPrinter.FormatFinalsMatches(finals, "Final");
-            resultsPrinter.FormatWinner(finals);
-
-            _ = resultsPrinter.PrintResults();
-            
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupD");
-
-            resultsPrinter.FormatFinalsMatches(quarterFinals1, "Kvartsfinal 1");
-            resultsPrinter.FormatFinalsMatches(quarterFinals2, "Kvartsfinal 2");
-            resultsPrinter.FormatFinalsMatches(quarterFinals3, "Kvartsfinal 3");
-            resultsPrinter.FormatFinalsMatches(quarterFinals4, "Kvartsfinal 4");
-
-            resultsPrinter.FormatFinalsMatches(semiFinals1, "Semifinal 1");
-            resultsPrinter.FormatFinalsMatches(semiFinals2, "Semifinal 2");
-            
-            resultsPrinter.FormatFinalsMatches(finals, "Final");
-            resultsPrinter.FormatWinner(finals);
-
-            _ = resultsPrinter.PrintResults();
-            
+            PrintTournamentResultsToFile("TournamentResults");   
         }
 
         public void RegisterCompetingTeams()
@@ -203,16 +155,16 @@ namespace FootballPredictor
 
         public void RegisterQuarterFinals()
         {
-            quarterFinals1 = new FinalsMatch(winnerGroupA, runnerUpGroupB, "QF1");
-            quarterFinals2 = new FinalsMatch(winnerGroupB, runnerUpGroupA, "QF2");
-            quarterFinals3 = new FinalsMatch(winnerGroupC, runnerUpGroupD, "QF3");
-            quarterFinals4 = new FinalsMatch(winnerGroupD, runnerUpGroupC, "QF4");
+            quarterFinals1 = new FinalsMatch(winnerGroupA, runnerUpGroupB, "Kvartsfinal 1");
+            quarterFinals2 = new FinalsMatch(winnerGroupB, runnerUpGroupA, "Kvartsfinal 2");
+            quarterFinals3 = new FinalsMatch(winnerGroupC, runnerUpGroupD, "Kvartsfinal 3");
+            quarterFinals4 = new FinalsMatch(winnerGroupD, runnerUpGroupC, "Kvartsfinal 4");
         }
 
         public void RegisterSemiFinals()
         {
-            semiFinals1 = new FinalsMatch(quarterFinals1.winningTeam, quarterFinals3.winningTeam, "SF1");
-            semiFinals2 = new FinalsMatch(quarterFinals2.winningTeam, quarterFinals4.winningTeam, "SF2");
+            semiFinals1 = new FinalsMatch(quarterFinals1.winningTeam, quarterFinals3.winningTeam, "Semifinal 1");
+            semiFinals2 = new FinalsMatch(quarterFinals2.winningTeam, quarterFinals4.winningTeam, "Semifinal 2");
         }
 
         public void RegisterFinals()
@@ -227,15 +179,15 @@ namespace FootballPredictor
             resultsPrinter.FormatGroupMatches(listOfMatches, "groupC");
             resultsPrinter.FormatGroupMatches(listOfMatches, "groupD");
 
-            resultsPrinter.FormatFinalsMatches(quarterFinals1, "Kvartsfinal 1");
-            resultsPrinter.FormatFinalsMatches(quarterFinals2, "Kvartsfinal 2");
-            resultsPrinter.FormatFinalsMatches(quarterFinals3, "Kvartsfinal 3");
-            resultsPrinter.FormatFinalsMatches(quarterFinals4, "Kvartsfinal 4");
+            resultsPrinter.FormatFinalsMatches(quarterFinals1);
+            resultsPrinter.FormatFinalsMatches(quarterFinals2);
+            resultsPrinter.FormatFinalsMatches(quarterFinals3);
+            resultsPrinter.FormatFinalsMatches(quarterFinals4);
 
-            resultsPrinter.FormatFinalsMatches(semiFinals1, "Semifinal 1");
-            resultsPrinter.FormatFinalsMatches(semiFinals2, "Semifinal 2");
+            resultsPrinter.FormatFinalsMatches(semiFinals1);
+            resultsPrinter.FormatFinalsMatches(semiFinals2);
 
-            resultsPrinter.FormatFinalsMatches(finals, "Final");
+            resultsPrinter.FormatFinalsMatches(finals);
             resultsPrinter.FormatWinner(finals);
         }
 

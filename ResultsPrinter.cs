@@ -39,10 +39,11 @@ namespace FootballPredictor
             formattedOutMessage += formattedGroupString;
         }
 
-        public void FormatFinalsMatches(FinalsMatch finalsMatch, string matchName)
+        public void FormatFinalsMatches(FinalsMatch finalsMatch)
         {
             string formattedFinalsString = "";
-            
+
+            string matchName = finalsMatch.matchName;
             string t1Name = finalsMatch.team1.name;
             string t2Name = finalsMatch.team2.name;
 

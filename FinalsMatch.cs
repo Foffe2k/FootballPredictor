@@ -49,7 +49,6 @@ namespace FootballPredictor
             }
             else if (fate >= 85)
             {
-
                 return 2;
             }
             else if (fate >= 50)
