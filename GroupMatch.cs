@@ -202,7 +202,6 @@ namespace FootballPredictor
 
             return random.Next(0,1);
         }
-
        
         private void calculateMatchPoints(List<TeamScore> matchResults)
         {

@@ -12,7 +12,6 @@ namespace FootballPredictor
         public int groupPlayScore;
         public int goalsScored;
         public int goalsConceded;
-        
 
         public Team(string teamName, int qualifierRank2022, string startingGroup)
         {
@@ -22,7 +21,6 @@ namespace FootballPredictor
             groupPlayScore = 0;
             goalsScored = 0;
             goalsConceded = 0;
-
         }                      
 
         public double calculateGoalAverage()
@@ -39,7 +37,6 @@ namespace FootballPredictor
             {
                 return  1 / goalsConceded;
             }
-
             return 0;
         }
 
@@ -47,7 +44,5 @@ namespace FootballPredictor
         {
             return goalsScored - goalsConceded;
         }
-            
-      
     }
 }

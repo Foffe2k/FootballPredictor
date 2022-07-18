@@ -15,7 +15,5 @@ namespace FootballPredictor
             this.score = score;
             this.team = team;
         }
-
-
     }
 }
