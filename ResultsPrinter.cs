@@ -9,7 +9,7 @@ namespace FootballPredictor
 {
     class ResultsPrinter
     {
-        private const string ACCEPTED_FILE_EXTENSION = ".txt";
+        private const string CORRECT_FILE_EXTENSION = ".txt";
         
         private string formattedOutMessage = "";
 
