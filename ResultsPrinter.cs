@@ -13,25 +13,27 @@ namespace FootballPredictor
         
         private string formattedOutMessage = "";
 
-        public void FormatGroupMatches(List<GroupMatch> listOfMatches, string groupName)
+        public void FormatGroupMatches(List<GroupMatch> listOfMatches, Group group)
         {            
-            string groupID = groupName.Substring(5, 1);
             string formattedGroupString = "";
 
-            List<GroupMatch> matches = SortGroupMatches(listOfMatches, groupID);
-            matches.OrderBy(m => m.matchName).ToList();
+            string groupID = group.ToString();
+
+            List<GroupMatch> groupMatches = GetGroupMatches(listOfMatches, groupID);
+            
+            groupMatches.OrderBy(m => m.matchName).ToList();
 
             formattedGroupString += "--Grupp " + groupID + "--\n";
             
-            foreach (GroupMatch match in matches)
+            foreach (GroupMatch groupMatch in groupMatches)
             {
-                string t1Name = match.team1.name;
-                string t2Name = match.team2.name;
+                string team1Name = groupMatch.team1.name;
+                string team2Name = groupMatch.team2.name;
                 
-                int t1Score = match.getTeamScore(match.matchResults, t1Name);
-                int t2Score = match.getTeamScore(match.matchResults, t2Name);
+                int team1Score = groupMatch.getTeamScore(groupMatch.matchResults, team1Name);
+                int team2Score = groupMatch.getTeamScore(groupMatch.matchResults, team2Name);
 
-                formattedGroupString += t1Name + " - " + t2Name + " : " + t1Score + " - " + t2Score + "\n";
+                formattedGroupString += team1Name + " - " + team2Name + " : " + team1Score + " - " + team2Score + "\n";
             }
 
             formattedGroupString += "\n";
@@ -39,35 +41,7 @@ namespace FootballPredictor
             formattedOutMessage += formattedGroupString;
         }
 
-        public void FormatFinalsMatches(FinalsMatch finalsMatch)
-        {
-            string formattedFinalsString = "";
-
-            string matchName = finalsMatch.matchName;
-            string t1Name = finalsMatch.team1.name;
-            string t2Name = finalsMatch.team2.name;
-
-            int t1Score = finalsMatch.GetTeamScore(finalsMatch.matchResults, t1Name);
-            int t2Score = finalsMatch.GetTeamScore(finalsMatch.matchResults, t2Name);
-
-            formattedFinalsString += "--" + matchName + "--\n";
-            formattedFinalsString += t1Name + " - " + t2Name + " : " + t1Score + " - " + t2Score + "\n";
-            formattedFinalsString += "\n";
-
-            formattedOutMessage += formattedFinalsString;
-        }
-
-        public void FormatWinner(FinalsMatch finalsMatch)
-        {
-            string formattedWinnerString = "";
-
-            formattedWinnerString += "Vinnaren är: " + finalsMatch.GetWinningTeamName() + "\n";
-
-            formattedOutMessage += formattedWinnerString;
-        }
-
-
-        private List<GroupMatch> SortGroupMatches(List<GroupMatch> listOfMatches, string groupID)
+        private List<GroupMatch> GetGroupMatches(List<GroupMatch> listOfMatches, string groupID)
         {
             List<GroupMatch> matches = new List<GroupMatch>();
 
@@ -94,6 +68,35 @@ namespace FootballPredictor
             }
             return false;
         }
+
+        public void FormatFinalsMatches(FinalsMatch finalsMatch)
+        {
+            string formattedFinalsString = "";
+
+            string matchName = finalsMatch.matchName;
+            string team1Name = finalsMatch.team1.name;
+            string team2Name = finalsMatch.team2.name;
+
+            int team1Score = finalsMatch.GetTeamScore(finalsMatch.matchResults, team1Name);
+            int team2Score = finalsMatch.GetTeamScore(finalsMatch.matchResults, team2Name);
+
+            formattedFinalsString += "--" + matchName + "--\n";
+            formattedFinalsString += team1Name + " - " + team2Name + " : " + team1Score + " - " + team2Score + "\n";
+            formattedFinalsString += "\n";
+
+            formattedOutMessage += formattedFinalsString;
+        }
+
+        public void FormatWinner(FinalsMatch finalsMatch)
+        {
+            string formattedWinnerString = "";
+
+            formattedWinnerString += "Vinnaren är: " + finalsMatch.GetWinningTeamName() + "\n";
+
+            formattedOutMessage += formattedWinnerString;
+        }        
+
+        
 
         public async Task PrintResultsToFile(string fileName)
         {

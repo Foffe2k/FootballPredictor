@@ -5,30 +5,34 @@ using System.Linq;
 
 namespace FootballPredictor
 {
-    class GroupMatch
+    class GroupMatch: Match
     {
-        public Team team1;
-        public Team team2;
-
-        public int ratingDifference;
-
-        public string matchName;
-
-        public List<TeamScore> matchResults;
+        public Team team1 { get; private set; }
+        public Team team2 { get; private set; }
+        public string matchName { get; private set; }
+        private int ratingDifference { get; set; }
+        public List<TeamScore> matchResults { get; private set; }
         
-        public GroupMatch(string nameTeam1, string nameTeam2, string matchName, List<Team> teamRoster)
+        public GroupMatch(Country countryName1, Country countryName2, string matchName, List<Team> teamRoster)
         {
             matchResults = new List<TeamScore>();
 
-            team1 = teamRoster.Single(x => x.name.Equals(nameTeam1));
-            team2 = teamRoster.Single(x => x.name.Equals(nameTeam2));
+            try
+            {
+                team1 = teamRoster.Single(x => x.name.Equals(countryName1.ToString()));
+                team2 = teamRoster.Single(x => x.name.Equals(countryName2.ToString()));
+            }
+            catch (MissingTeamException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             this.matchName = matchName;
             calculateDifferenceInRanking();
             calculateGoalsByTeam(team1, team2);
             calculateGoalsByTeam(team2, team1);
             calculateMatchPoints(matchResults);
             adjustGoalStatistics(matchResults);
-            adjustTeamGoalAverage(team1, team2);
         }       
 
         private void calculateDifferenceInRanking()
@@ -60,7 +64,7 @@ namespace FootballPredictor
             Random random = new Random();
             int fate = random.Next(0, 100);
 
-            if (currentTeam.qualifierRank2022 > opposingTeam.qualifierRank2022 && ratingDifference > 11)
+            if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
             {
                 if (fate == 100)
                 {
@@ -83,7 +87,7 @@ namespace FootballPredictor
                     return 0;
                 }
             } 
-            else if (currentTeam.qualifierRank2022 > opposingTeam.qualifierRank2022 && ratingDifference > 6)
+            else if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 6)
             {
                 if (fate == 100)
                 {
@@ -106,7 +110,7 @@ namespace FootballPredictor
                     return 0;
                 }
             }
-            else if (currentTeam.qualifierRank2022 > opposingTeam.qualifierRank2022 && ratingDifference > 0)
+            else if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 0)
             {
                 if (fate == 100)
                 {
@@ -130,7 +134,7 @@ namespace FootballPredictor
                 }
             }
 
-            if (currentTeam.qualifierRank2022 < opposingTeam.qualifierRank2022 && ratingDifference > 11)
+            if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
             {
                 if (fate == 100)
                 {
@@ -153,7 +157,7 @@ namespace FootballPredictor
                     return 0;
                 }
             }
-            else if (currentTeam.qualifierRank2022 < opposingTeam.qualifierRank2022 && ratingDifference > 6)
+            else if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 6)
             {
                 if (fate == 100)
                 {
@@ -176,7 +180,7 @@ namespace FootballPredictor
                     return 0;
                 }
             }
-            else if (currentTeam.qualifierRank2022 < opposingTeam.qualifierRank2022 && ratingDifference > 0)
+            else if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 0)
             {
                 if (fate == 100)
                 {
@@ -201,6 +205,11 @@ namespace FootballPredictor
             }
 
             return random.Next(0,1);
+        }
+
+        private bool CurrentTeamIsRatedHigher(Team currentTeam, Team opposingTeam)
+        {
+            return currentTeam.qualifierRank2022 > opposingTeam.qualifierRank2022;
         }
        
         private void calculateMatchPoints(List<TeamScore> matchResults)
@@ -239,18 +248,24 @@ namespace FootballPredictor
             team2.goalsScored += scoreTeam2;
             team2.goalsConceded += scoreTeam1;
         }
-
-        private void adjustTeamGoalAverage(Team team1, Team team2)
-        {
-            team1.calculateGoalAverage();
-            team2.calculateGoalAverage();
-        }
-
+        
         public int getTeamScore(List<TeamScore> matchResults, string teamName)
         {
             TeamScore team = matchResults.Single(r => r.team.name.Equals(teamName));
 
             return team.score;
+        }
+
+        public Group GetGroupID()
+        {
+            if (team1.startingGroup.Equals(team2.startingGroup))
+            {
+                return team1.startingGroup;
+            }
+            else
+            {
+                throw new InvalidGroupPlayMatchUpException();
+            }
         }
     }
 }

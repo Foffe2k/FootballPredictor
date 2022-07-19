@@ -9,146 +9,153 @@ namespace FootballPredictor
 {
     class Tournament
     {
-        private List<Team> listOfTeams;
-        private List<GroupMatch> listOfMatches;
-
-        private FinalsMatch quarterFinals1;
-        private FinalsMatch quarterFinals2;
-        private FinalsMatch quarterFinals3;
-        private FinalsMatch quarterFinals4;
-        private FinalsMatch semiFinals1;
-        private FinalsMatch semiFinals2;
-        private FinalsMatch finals;
-
-        private Team winnerGroupA;
-        private Team winnerGroupB;
-        private Team winnerGroupC;
-        private Team winnerGroupD;
+        private const string PRINTED_FILENAME = "WomensUEFA2022Results";
+        private List<Team> listOfParticipatingTeams { get; set; }
+        private List<GroupMatch> listOfGroupMatches { get; set; }
+        private FinalsMatch quarterFinals1 { get; set; }
+        private FinalsMatch quarterFinals2 { get; set; }
+        private FinalsMatch quarterFinals3 { get; set; }
+        private FinalsMatch quarterFinals4 { get; set; }
+        private FinalsMatch semiFinals1 { get; set; }
+        private FinalsMatch semiFinals2 { get; set; }
+        private FinalsMatch finals { get; set; }
         
-        private Team runnerUpGroupA;
-        private Team runnerUpGroupB;
-        private Team runnerUpGroupC;
-        private Team runnerUpGroupD;
+        private Team winnerGroupA { get; set; }
+        private Team winnerGroupB { get; set; }
+        private Team winnerGroupC { get; set; }
+        private Team winnerGroupD { get; set; }
 
-        private ResultsPrinter resultsPrinter;
+        private Team runnerUpGroupA { get; set; }
+        private Team runnerUpGroupB { get; set; }
+        private Team runnerUpGroupC { get; set; }
+        private Team runnerUpGroupD { get; set; }
 
+        private ResultsPrinter resultsPrinter { get; set; }
 
         public Tournament()
         {
-            listOfTeams = new List<Team>();
-            listOfMatches = new List<GroupMatch>();
+            listOfParticipatingTeams = new List<Team>();
+            listOfGroupMatches = new List<GroupMatch>();
+            resultsPrinter = new ResultsPrinter();  
             
             RegisterCompetingTeams();
             RegisterGroupPlayMatches();
-            ResolveGroupPlay(listOfTeams);
+            ResolveGroupPlay(listOfParticipatingTeams);
             RegisterQuarterFinals();
             RegisterSemiFinals();
             RegisterFinals();
             FormatTournamentResultsForPrinting();
-            PrintTournamentResultsToFile("TournamentResults");   
+            PrintTournamentResultsToFile(PRINTED_FILENAME);   
         }
 
         public void RegisterCompetingTeams()
         {
-            listOfTeams.AddRange(new List<Team>
+            listOfParticipatingTeams.AddRange(new List<Team>
             {
-                new Team("England", 1, "groupA"),
-                new Team("Norge", 4, "groupA"),
-                new Team("Österrike", 13, "groupA"),
-                new Team("Nordirland", 15, "groupA"),
-                new Team("Tyskland", 10, "groupB"),
-                new Team("Spanien", 5, "groupB"),
-                new Team("Danmark", 3, "groupB"),
-                new Team("Finland", 6, "groupB"),
-                new Team("Nederländerna", 2, "groupC"),
-                new Team("Sverige", 7, "groupC"),
-                new Team("Portugal", 16, "groupC"),
-                new Team("Schweiz", 14, "groupC"),
-                new Team("Frankrike", 8, "groupD"),
-                new Team("Italien", 11, "groupD"),
-                new Team("Belgien", 9, "groupD"),
-                new Team("Island", 12, "groupD"),
+                new Team(Country.England, Group.A),
+                new Team(Country.Norge, Group.A),
+                new Team(Country.Österrike, Group.A),
+                new Team(Country.Nordirland, Group.A),
+                new Team(Country.Tyskland, Group.B),
+                new Team(Country.Spanien, Group.B),
+                new Team(Country.Danmark, Group.B),
+                new Team(Country.Finland, Group.B),
+                new Team(Country.Nederländerna, Group.C),
+                new Team(Country.Sverige, Group.C),
+                new Team(Country.Portugal, Group.C),
+                new Team(Country.Schweiz, Group.C),
+                new Team(Country.Frankrike, Group.D),
+                new Team(Country.Italien, Group.D),
+                new Team(Country.Belgien, Group.D),
+                new Team(Country.Island, Group.D),
             }); 
         }
 
         public void RegisterGroupPlayMatches()
         {
-            listOfMatches.AddRange(new List<GroupMatch> { 
+            listOfGroupMatches.AddRange(new List<GroupMatch> { 
                 
                 //Grupp A
-                new GroupMatch("England", "Österrike", "GPA1", listOfTeams),
-                new GroupMatch("Norge", "Nordirland", "GPA2", listOfTeams),
-                new GroupMatch("Österrike", "Nordirland", "GPA3", listOfTeams),
-                new GroupMatch("England", "Norge", "GPA4", listOfTeams),
-                new GroupMatch("Nordirland", "England", "GPA5", listOfTeams),
-                new GroupMatch("Österrike", "Norge", "GPA6", listOfTeams),
+                new GroupMatch(Country.England, Country.Österrike, "GPA1", listOfParticipatingTeams),
+                new GroupMatch(Country.Norge, Country.Nordirland, "GPA2", listOfParticipatingTeams),
+                new GroupMatch(Country.Österrike, Country.Nordirland, "GPA3", listOfParticipatingTeams),
+                new GroupMatch(Country.England, Country.Norge, "GPA4", listOfParticipatingTeams),
+                new GroupMatch(Country.Nordirland, Country.England, "GPA5", listOfParticipatingTeams),
+                new GroupMatch(Country.Österrike, Country.Norge, "GPA6", listOfParticipatingTeams),
                 //Grupp B
-                new GroupMatch("Spanien", "Finland", "GPB1", listOfTeams),
-                new GroupMatch("Tyskland", "Danmark", "GPB2", listOfTeams),
-                new GroupMatch("Danmark", "Finland", "GPB3", listOfTeams),
-                new GroupMatch("Tyskland", "Spanien", "GPB4", listOfTeams),
-                new GroupMatch("Danmark", "Spanien", "GPB5", listOfTeams),
-                new GroupMatch("Finland", "Tyskland", "GPB6", listOfTeams),
+                new GroupMatch(Country.Spanien, Country.Finland, "GPB1", listOfParticipatingTeams),
+                new GroupMatch(Country.Tyskland, Country.Danmark, "GPB2", listOfParticipatingTeams),
+                new GroupMatch(Country.Danmark, Country.Finland, "GPB3", listOfParticipatingTeams),
+                new GroupMatch(Country.Tyskland, Country.Spanien, "GPB4", listOfParticipatingTeams),
+                new GroupMatch(Country.Danmark, Country.Spanien, "GPB5", listOfParticipatingTeams),
+                new GroupMatch(Country.Finland, Country.Tyskland, "GPB6", listOfParticipatingTeams),
                 //Grupp C
-                new GroupMatch("Portugal", "Schweiz", "GPC1", listOfTeams),
-                new GroupMatch("Nederländerna", "Sverige", "GPC2", listOfTeams),
-                new GroupMatch("Sverige", "Schweiz", "GPC3", listOfTeams),
-                new GroupMatch("Nederländerna", "Portugal", "GPC4", listOfTeams),
-                new GroupMatch("Sverige", "Portugal", "GPC5", listOfTeams),
-                new GroupMatch("Schweiz", "Nederländerna", "GPC6", listOfTeams),
+                new GroupMatch(Country.Portugal, Country.Schweiz, "GPC1", listOfParticipatingTeams),
+                new GroupMatch(Country.Nederländerna, Country.Sverige, "GPC2", listOfParticipatingTeams),
+                new GroupMatch(Country.Sverige, Country.Schweiz, "GPC3", listOfParticipatingTeams),
+                new GroupMatch(Country.Nederländerna, Country.Portugal, "GPC4", listOfParticipatingTeams),
+                new GroupMatch(Country.Sverige, Country.Portugal, "GPC5", listOfParticipatingTeams),
+                new GroupMatch(Country.Schweiz, Country.Nederländerna, "GPC6", listOfParticipatingTeams),
                 //Grupp D
-                new GroupMatch("Belgien", "Island", "GPD1", listOfTeams),
-                new GroupMatch("Frankrike", "Italien", "GPD2", listOfTeams),
-                new GroupMatch("Italien", "Island", "GPD3", listOfTeams),
-                new GroupMatch("Frankrike", "Belgien", "GPD4", listOfTeams),
-                new GroupMatch("Island", "Frankrike", "GPD5", listOfTeams),
-                new GroupMatch("Italien", "Belgien", "GPD6", listOfTeams),
+                new GroupMatch(Country.Belgien, Country.Island, "GPD1", listOfParticipatingTeams),
+                new GroupMatch(Country.Frankrike, Country.Italien, "GPD2", listOfParticipatingTeams),
+                new GroupMatch(Country.Italien, Country.Island, "GPD3", listOfParticipatingTeams),
+                new GroupMatch(Country.Frankrike, Country.Belgien, "GPD4", listOfParticipatingTeams),
+                new GroupMatch(Country.Island, Country.Frankrike, "GPD5", listOfParticipatingTeams),
+                new GroupMatch(Country.Italien, Country.Belgien, "GPD6", listOfParticipatingTeams),
             });
         }
 
-        public void ResolveGroupPlay(List<Team> teamRoster)
+        public void ResolveGroupPlay(List<Team> tournamentRoster)
         {
-            List<Team> groupA = PopulateGroup(teamRoster, "groupA");
-            List<Team> groupB = PopulateGroup(teamRoster, "groupB");
-            List<Team> groupC = PopulateGroup(teamRoster, "groupC");
-            List<Team> groupD = PopulateGroup(teamRoster, "groupD");
+            List<Team> groupA = PopulateGroup(tournamentRoster, Group.A);
+            List<Team> groupB = PopulateGroup(tournamentRoster, Group.B);
+            List<Team> groupC = PopulateGroup(tournamentRoster, Group.C);
+            List<Team> groupD = PopulateGroup(tournamentRoster, Group.D);
 
-            winnerGroupA = FindWinnerLinq(groupA);
-            winnerGroupB = FindWinnerLinq(groupB);
-            winnerGroupC = FindWinnerLinq(groupC);
-            winnerGroupD = FindWinnerLinq(groupD);
+            winnerGroupA = FindWinner(groupA);
+            winnerGroupB = FindWinner(groupB);
+            winnerGroupC = FindWinner(groupC);
+            winnerGroupD = FindWinner(groupD);
 
-            runnerUpGroupA = FindRunnerUpLinq(groupA);
-            runnerUpGroupB = FindRunnerUpLinq(groupB);
-            runnerUpGroupC = FindRunnerUpLinq(groupC);
-            runnerUpGroupD = FindRunnerUpLinq(groupD);
+            runnerUpGroupA = FindRunnerUp(groupA);
+            runnerUpGroupB = FindRunnerUp(groupB);
+            runnerUpGroupC = FindRunnerUp(groupC);
+            runnerUpGroupD = FindRunnerUp(groupD);
         }
 
-        public List<Team> PopulateGroup(List<Team> teamRoster, string group)
+        public List<Team> PopulateGroup(List<Team> teamRoster, Group group)
         {
-            List<Team> result = new List<Team>();
+            List<Team> groupMembers = new List<Team>();
 
             foreach (Team team in teamRoster)
             {
                 if (team.startingGroup.Equals(group))
                 {
-                    result.Add(team);
+                    groupMembers.Add(team);
                 }
             }
 
-            return result;
+            return groupMembers;
         }
 
-        public Team FindWinnerLinq(List<Team> group)
+        public Team FindWinner(List<Team> group)
         {
-            group.OrderBy(x => x.groupPlayScore).ThenBy(x => x.calculateGoalDifference()).ThenBy(x => x.qualifierRank2022);
+            SortGroupAccordingToGroupVictoryCriteria(group);
 
             return group[0];
         }
 
-        public Team FindRunnerUpLinq(List<Team> group)
+        public void SortGroupAccordingToGroupVictoryCriteria(List<Team> group)
         {
-            group.OrderBy(x => x.groupPlayScore).ThenBy(x => x.calculateGoalDifference()).ThenBy(x => x.qualifierRank2022);
+            group.OrderBy(team => team.groupPlayScore).
+                   ThenBy(team => team.GetGoalDifference()).
+                   ThenBy(team => team.qualifierRank2022);
+        }
+
+        public Team FindRunnerUp(List<Team> group)
+        {
+            SortGroupAccordingToGroupVictoryCriteria(group);
 
             return group[1];
         }
@@ -174,10 +181,10 @@ namespace FootballPredictor
 
         public void FormatTournamentResultsForPrinting()
         {
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupA");
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupB");
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupC");
-            resultsPrinter.FormatGroupMatches(listOfMatches, "groupD");
+            resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.A);
+            resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.B);
+            resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.C);
+            resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.D);
 
             resultsPrinter.FormatFinalsMatches(quarterFinals1);
             resultsPrinter.FormatFinalsMatches(quarterFinals2);
@@ -196,8 +203,5 @@ namespace FootballPredictor
             _ = resultsPrinter.PrintResultsToFile(fileName);
         }
 
-        
-
-        
     }
 }
