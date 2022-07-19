@@ -6,7 +6,7 @@ namespace FootballPredictor
 {
     class TeamScore
     {
-        public int score;
+        public int score { get; private set; }
         
         public Team team;
 
@@ -14,6 +14,11 @@ namespace FootballPredictor
         {
             this.score = score;
             this.team = team;
+        }
+
+        public string GetTeamName()
+        {
+            return team.name;
         }
     }
 }

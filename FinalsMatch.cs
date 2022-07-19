@@ -5,57 +5,62 @@ using System.Text;
 
 namespace FootballPredictor
 {
-    class FinalsMatch
+    class FinalsMatch: Match
     {
-        public Team team1;
-        public Team team2;
+        private const int MINIMUM_RANDOM_GOALS = 0;
+        private const int MAXIMUM_RANDOM_GOALS = 2;
 
-        public Team winningTeam;
-        public Team losingTeam;
-
-        public string matchName;
-
-        public List<TeamScore> matchResults;
+        public Team team1 { get; private set; }
+        public Team team2 { get; private set; }
+        public Team winningTeam { get; private set; }
+        public Team losingTeam { get; private set; }
+        public string matchName { get; private set; }
+        public List<TeamScore> matchResults { get; private set; }
 
         public FinalsMatch(Team team1, Team team2, string matchName)
         {
             this.team1 = team1;
             this.team2 = team2;
             this.matchName = matchName;
-            matchResults = new List<TeamScore>();   
-            calculateGoalsByTeam(team1, matchResults);
-            calculateGoalsByTeam(team2, matchResults);
-            calculateWinner(matchResults);
+            matchResults = new List<TeamScore>();
+            DecideOutcomeOfMatch();            
         }
 
-        public void calculateGoalsByTeam(Team team, List<TeamScore> matchResult)
+        private void DecideOutcomeOfMatch()
+        {
+            CalculateGoalsByTeam(team1);
+            CalculateGoalsByTeam(team2);
+            CalculateWinner(matchResults);
+        }
+
+        private void CalculateGoalsByTeam(Team team)
         {
             int scoredGoals = 0;
             Random random = new Random();
 
-            scoredGoals += random.Next(0, 2);
-            scoredGoals += randomlyAddAddtionalGoals(random);
+            scoredGoals += random.Next(MINIMUM_RANDOM_GOALS, MAXIMUM_RANDOM_GOALS);
+            scoredGoals += RandomlyAddAddtionalGoals(random);
 
-            matchResult.Add(new TeamScore(scoredGoals, team));
+            matchResults.Add(new TeamScore(scoredGoals, team));
         }
 
-        public int randomlyAddAddtionalGoals(Random random)
+        private int RandomlyAddAddtionalGoals(Random random)
         {
-            int fate = random.Next(0, 100);
+            int randomPercentage = random.Next(1, 100);
 
-            if (fate == 100)
+            if (randomPercentage == 100)
             {
                 return 3;
             }
-            else if (fate >= 85)
+            else if (randomPercentage >= 85)
             {
                 return 2;
             }
-            else if (fate >= 50)
+            else if (randomPercentage >= 50)
             {
                 return 1;
             }
-            else if (fate >= 30)
+            else if (randomPercentage >= 30)
             {
                 return 1;
             }
@@ -65,47 +70,64 @@ namespace FootballPredictor
             }
         }
 
-        public void calculateWinner(List<TeamScore> matchResult)
+        private void CalculateWinner(List<TeamScore> matchResult)
+        {
+            if (MatchIsADraw(matchResult))
+            {
+                RedoMatchOutcome();
+            }
+            else
+            {
+                SetWinningAndLosingTeam(matchResult);
+            }    
+        }
+
+        private bool MatchIsADraw(List<TeamScore> matchResult)
         {
             TeamScore ts1 = matchResult[0];
             TeamScore ts2 = matchResult[1];
 
-            if (matchIsADraw(matchResult))
-            {
-                matchResults.Clear();
-                calculateGoalsByTeam(team1, matchResult);
-                calculateGoalsByTeam(team2, matchResult);
-                calculateWinner(matchResults);
-            }
-            else
-            {
-                if (ts1.score > ts2.score)
-                {
-                    winningTeam = ts1.team;
-                    losingTeam = ts2.team;
-                }
-                else if (ts2.score > ts1.score)
-                {
-                    winningTeam = ts2.team;
-                    losingTeam = ts1.team;
-                }
-            }    
-        }
-
-        public bool matchIsADraw(List<TeamScore> matchResults)
-        {
-            if (matchResults[0].score == matchResults[1].score)
+            if (ts1.score == ts2.score)
             {
                 return true;
             }
 
             return false;
         }
-        public int getTeamScore(List<TeamScore> matchResults, string teamName)
-        {
-            TeamScore team = matchResults.Single(r => r.team.name.Equals(teamName));
 
-            return team.score;
+        private void RedoMatchOutcome()
+        {
+            matchResults.Clear();
+            DecideOutcomeOfMatch();
+        }
+
+        private void SetWinningAndLosingTeam(List<TeamScore> matchResult)
+        {
+            TeamScore ts1 = matchResult[0];
+            TeamScore ts2 = matchResult[1];
+
+            if (ts1.score > ts2.score)
+            {
+                winningTeam = ts1.team;
+                losingTeam = ts2.team;
+            }
+            else if (ts2.score > ts1.score)
+            {
+                winningTeam = ts2.team;
+                losingTeam = ts1.team;
+            }
+        }
+
+        public int GetTeamScore(List<TeamScore> matchResult, string teamName)
+        {
+            TeamScore teamScore = matchResult.Single(ts => ts.GetTeamName().Equals(teamName));
+
+            return teamScore.score;
+        }   
+        
+        public string GetWinningTeamName()
+        {
+            return winningTeam.name;
         }
     }
 }

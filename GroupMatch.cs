@@ -24,8 +24,8 @@ namespace FootballPredictor
             team2 = teamRoster.Single(x => x.name.Equals(nameTeam2));
             this.matchName = matchName;
             calculateDifferenceInRanking();
-            calculateGoalsByTeam(team1, team2, matchResults);
-            calculateGoalsByTeam(team2, team1, matchResults);
+            calculateGoalsByTeam(team1, team2);
+            calculateGoalsByTeam(team2, team1);
             calculateMatchPoints(matchResults);
             adjustGoalStatistics(matchResults);
             adjustTeamGoalAverage(team1, team2);
@@ -44,18 +44,18 @@ namespace FootballPredictor
         }
 
        
-        private void calculateGoalsByTeam(Team currentTeam, Team opposingTeam, List<TeamScore> matchResult)
+        private void calculateGoalsByTeam(Team currentTeam, Team opposingTeam)
         {
             int scoredGoals = 0;
             Random random = new Random();
 
             scoredGoals += random.Next(0, 3);
-            scoredGoals += adjustForRanking(currentTeam, opposingTeam);
+            scoredGoals += RandomlyAddAddtionalGoalsWeightedByQualifierRanking(currentTeam, opposingTeam);
 
-            matchResult.Add(new TeamScore(scoredGoals, currentTeam));
+            matchResults.Add(new TeamScore(scoredGoals, currentTeam));
         }
 
-        private int adjustForRanking(Team currentTeam, Team opposingTeam)
+        private int RandomlyAddAddtionalGoalsWeightedByQualifierRanking(Team currentTeam, Team opposingTeam)
         {
             Random random = new Random();
             int fate = random.Next(0, 100);

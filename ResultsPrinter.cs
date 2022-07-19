@@ -47,8 +47,8 @@ namespace FootballPredictor
             string t1Name = finalsMatch.team1.name;
             string t2Name = finalsMatch.team2.name;
 
-            int t1Score = finalsMatch.getTeamScore(finalsMatch.matchResults, t1Name);
-            int t2Score = finalsMatch.getTeamScore(finalsMatch.matchResults, t2Name);
+            int t1Score = finalsMatch.GetTeamScore(finalsMatch.matchResults, t1Name);
+            int t2Score = finalsMatch.GetTeamScore(finalsMatch.matchResults, t2Name);
 
             formattedFinalsString += "--" + matchName + "--\n";
             formattedFinalsString += t1Name + " - " + t2Name + " : " + t1Score + " - " + t2Score + "\n";
@@ -61,7 +61,7 @@ namespace FootballPredictor
         {
             string formattedWinnerString = "";
 
-            formattedWinnerString += "Vinnaren är: " + finalsMatch.winningTeam.name + "\n";
+            formattedWinnerString += "Vinnaren är: " + finalsMatch.GetWinningTeamName() + "\n";
 
             formattedOutMessage += formattedWinnerString;
         }
@@ -110,13 +110,13 @@ namespace FootballPredictor
             {
                 string revisedFileName = changeToCorrectFileExtension(fileName);
 
-                PrintResultsToFile(revisedFileName);
+                _ = PrintResultsToFile(revisedFileName);
             }
             else
             {
                 string revisedFileName = addCorrectFileExtension(fileName);
 
-                PrintResultsToFile(revisedFileName);
+                _ = PrintResultsToFile(revisedFileName);
             }
 
         }
