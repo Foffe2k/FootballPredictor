@@ -34,8 +34,8 @@ namespace FootballPredictor
             calculateDifferenceInRanking();
             calculateGoalsByTeam(team1, team2);
             calculateGoalsByTeam(team2, team1);
-            calculateMatchPoints(matchResults);
-            adjustGoalStatistics(matchResults);
+            CalculateMatchPoints(matchResults);
+            AdjustGoalStatistics(matchResults);
         }       
 
         private void calculateDifferenceInRanking()
@@ -68,153 +68,63 @@ namespace FootballPredictor
 
             if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
             {
-                if (randomPercentage == 100)
-                {
-                    return 3;
-                }
-                else if (randomPercentage >= 75)
-                {
-                    return 2;
-                }
-                else if (randomPercentage >= 50)
-                {
-                    return 2;
-                }
-                else if (randomPercentage >= 25)
-                {
-                    return 1;
-                }
-                else 
-                {
-                    return 0;
-                }
+                return GetAdditionalGoals(randomPercentage, 0, 1, 2, 2, 3);
             } 
             else if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 6)
             {
-                if (randomPercentage == 100)
-                {
-                    return 3;
-                }
-                else if (randomPercentage >= 75)
-                {
-                    return 2;
-                }
-                else if (randomPercentage >= 50)
-                {
-                    return 1;
-                }
-                else if (randomPercentage >= 25)
-                {
-                    return 1;
-                }
-                else 
-                {
-                    return 0;
-                }
+                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
             }
             else if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 0)
             {
-                if (randomPercentage == 100)
-                {
-                    return 3;
-                }
-                else if (randomPercentage >= 75)
-                {
-                    return 2;
-                }
-                else if (randomPercentage >= 50)
-                {
-                    return 1;
-                }
-                else if (randomPercentage >= 25)
-                {
-                    return 0;
-                }
-                else 
-                {
-                    return 0;
-                }
+                return GetAdditionalGoals(randomPercentage, 0, 0, 1, 2, 3);
             }
 
             if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
             {
-                if (randomPercentage == 100)
-                {
-                    return 3;
-                }
-                else if (randomPercentage >= 75)
-                {
-                    return 2;
-                }
-                else if (randomPercentage >= 50)
-                {
-                    return 1;
-                }
-                else if (randomPercentage >= 25)
-                {
-                    return 0;
-                }
-                else 
-                {
-                    return 0;
-                }
+                return GetAdditionalGoals(randomPercentage, 0, 0, 1, 2, 3);
             }
             else if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 6)
             {
-                if (randomPercentage == 100)
-                {
-                    return 3;
-                }
-                else if (randomPercentage >= 75)
-                {
-                    return 2;
-                }
-                else if (randomPercentage >= 50)
-                {
-                    return 1;
-                }
-                else if (randomPercentage >= 25)
-                {
-                    return 1;
-                }
-                else 
-                {
-                    return 0;
-                }
+                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);                
             }
-            else if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 0)
+            else 
             {
-                if (randomPercentage == 100)
-                {
-                    return 3;
-                }
-                else if (randomPercentage >= 75)
-                {
-                    return 2;
-                }
-                else if (randomPercentage >= 50)
-                {
-                    return 1;
-                }
-                else if (randomPercentage >= 25)
-                {
-                    return 1;
-                }
-                else 
-                {
-                    return 0;
-                }
+                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
             }
-
-            return random.Next(0,1); //Shouldn't be able to happen
         }
 
         private bool CurrentTeamIsRatedHigher(Team currentTeam, Team opposingTeam)
         {
             return currentTeam.qualifierRank2022 > opposingTeam.qualifierRank2022;
         }
+
+        //private int GetAddtionalGoalsForHigherRatedTeam
        
-        private void calculateMatchPoints(List<TeamScore> matchResults)
+        private int GetAdditionalGoals(int randomPercentage, int mediumChance1, int mediumChance2, int mediumChance3, int mediumChance4, int veryRareChance)
+        {
+            if (randomPercentage == 100)
+            {
+                return veryRareChance;
+            }
+            else if (randomPercentage >= 75)
+            {
+                return mediumChance4;
+            }
+            else if (randomPercentage >= 50)
+            {
+                return mediumChance3;
+            }
+            else if (randomPercentage >= 25)
+            {
+                return mediumChance2;
+            }
+            else
+            {
+                return mediumChance1;
+            }
+        }
+
+        private void CalculateMatchPoints(List<TeamScore> matchResults)
         {
             TeamScore ts1 = matchResults[0];
             TeamScore ts2 = matchResults[1];
@@ -237,7 +147,8 @@ namespace FootballPredictor
             }
         }
 
-        private void adjustGoalStatistics(List<TeamScore> matchResults)
+
+        private void AdjustGoalStatistics(List<TeamScore> matchResults)
         {
             Team team1 = matchResults[0].team;
             Team team2 = matchResults[1].team;
@@ -251,7 +162,7 @@ namespace FootballPredictor
             team2.goalsConceded += scoreTeam1;
         }
         
-        public int getTeamScore(List<TeamScore> matchResults, string teamName)
+        public int GetTeamScore(List<TeamScore> matchResults, string teamName)
         {
             TeamScore team = matchResults.Single(r => r.team.name.Equals(teamName));
 
