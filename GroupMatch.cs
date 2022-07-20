@@ -64,7 +64,7 @@ namespace FootballPredictor
         private int RandomlyAddAddtionalGoalsWeightedByQualifierRanking(Team currentTeam, Team opposingTeam)
         {
             Random random = new Random();
-            int randomPercentage = random.Next(0, 100);
+            int randomPercentage = random.Next(1, 100);
 
             if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
             {
@@ -84,7 +84,7 @@ namespace FootballPredictor
                 {
                     return 1;
                 }
-                else if (randomPercentage >= 0)
+                else 
                 {
                     return 0;
                 }
@@ -107,7 +107,7 @@ namespace FootballPredictor
                 {
                     return 1;
                 }
-                else if (randomPercentage >= 0)
+                else 
                 {
                     return 0;
                 }
@@ -130,7 +130,7 @@ namespace FootballPredictor
                 {
                     return 0;
                 }
-                else if (randomPercentage >= 0)
+                else 
                 {
                     return 0;
                 }
@@ -154,7 +154,7 @@ namespace FootballPredictor
                 {
                     return 0;
                 }
-                else if (randomPercentage >= 0)
+                else 
                 {
                     return 0;
                 }
@@ -177,7 +177,7 @@ namespace FootballPredictor
                 {
                     return 1;
                 }
-                else if (randomPercentage >= 0)
+                else 
                 {
                     return 0;
                 }
@@ -200,13 +200,13 @@ namespace FootballPredictor
                 {
                     return 1;
                 }
-                else if (randomPercentage >= 0)
+                else 
                 {
                     return 0;
                 }
             }
 
-            return random.Next(0,1);
+            return random.Next(0,1); //Shouldn't be able to happen
         }
 
         private bool CurrentTeamIsRatedHigher(Team currentTeam, Team opposingTeam)
