@@ -9,7 +9,6 @@ namespace FootballPredictor
 {
     class Tournament
     {
-        private const string PRINTED_FILENAME = "WomensUEFA2022Results";
         private List<Team> listOfParticipatingTeams { get; set; }
         private List<GroupMatch> listOfGroupMatches { get; set; }
         private FinalsMatch quarterFinals1 { get; set; }
@@ -40,15 +39,15 @@ namespace FootballPredictor
             
             RegisterCompetingTeams();
             RegisterGroupPlayMatches();
-            ResolveGroupPlay(listOfParticipatingTeams);
+            ResolveGroupPlay();
             RegisterQuarterFinals();
             RegisterSemiFinals();
             RegisterFinals();
             FormatTournamentResultsForPrinting();
-            PrintTournamentResultsToFile(PRINTED_FILENAME);   
+            PrintTournamentResultsToFile();   
         }
 
-        public void RegisterCompetingTeams()
+        private void RegisterCompetingTeams()
         {
             listOfParticipatingTeams.AddRange(new List<Team>
             {
@@ -71,7 +70,7 @@ namespace FootballPredictor
             }); 
         }
 
-        public void RegisterGroupPlayMatches()
+        private void RegisterGroupPlayMatches()
         {
             listOfGroupMatches.AddRange(new List<GroupMatch> { 
                 
@@ -106,12 +105,12 @@ namespace FootballPredictor
             });
         }
 
-        public void ResolveGroupPlay(List<Team> tournamentRoster)
+        private void ResolveGroupPlay()
         {
-            List<Team> groupA = PopulateGroup(tournamentRoster, Group.A);
-            List<Team> groupB = PopulateGroup(tournamentRoster, Group.B);
-            List<Team> groupC = PopulateGroup(tournamentRoster, Group.C);
-            List<Team> groupD = PopulateGroup(tournamentRoster, Group.D);
+            List<Team> groupA = PopulateGroup(Group.A);
+            List<Team> groupB = PopulateGroup(Group.B);
+            List<Team> groupC = PopulateGroup(Group.C);
+            List<Team> groupD = PopulateGroup(Group.D);
 
             winnerGroupA = FindWinner(groupA);
             winnerGroupB = FindWinner(groupB);
@@ -124,11 +123,11 @@ namespace FootballPredictor
             runnerUpGroupD = FindRunnerUp(groupD);
         }
 
-        public List<Team> PopulateGroup(List<Team> teamRoster, Group group)
+        private List<Team> PopulateGroup(Group group)
         {
             List<Team> groupMembers = new List<Team>();
 
-            foreach (Team team in teamRoster)
+            foreach (Team team in listOfParticipatingTeams)
             {
                 if (team.startingGroup.Equals(group))
                 {
@@ -139,28 +138,28 @@ namespace FootballPredictor
             return groupMembers;
         }
 
-        public Team FindWinner(List<Team> group)
+        private Team FindWinner(List<Team> group)
         {
             SortGroupAccordingToGroupVictoryCriteria(group);
 
             return group[0];
         }
 
-        public void SortGroupAccordingToGroupVictoryCriteria(List<Team> group)
+        private void SortGroupAccordingToGroupVictoryCriteria(List<Team> group)
         {
             group.OrderBy(team => team.groupPlayScore).
                    ThenBy(team => team.GetGoalDifference()).
                    ThenBy(team => team.qualifierRank2022);
         }
 
-        public Team FindRunnerUp(List<Team> group)
+        private Team FindRunnerUp(List<Team> group)
         {
             SortGroupAccordingToGroupVictoryCriteria(group);
 
             return group[1];
         }
 
-        public void RegisterQuarterFinals()
+        private void RegisterQuarterFinals()
         {
             quarterFinals1 = new FinalsMatch(winnerGroupA, runnerUpGroupB, "Kvartsfinal 1");
             quarterFinals2 = new FinalsMatch(winnerGroupB, runnerUpGroupA, "Kvartsfinal 2");
@@ -168,18 +167,18 @@ namespace FootballPredictor
             quarterFinals4 = new FinalsMatch(winnerGroupD, runnerUpGroupC, "Kvartsfinal 4");
         }
 
-        public void RegisterSemiFinals()
+        private void RegisterSemiFinals()
         {
             semiFinals1 = new FinalsMatch(quarterFinals1.winningTeam, quarterFinals3.winningTeam, "Semifinal 1");
             semiFinals2 = new FinalsMatch(quarterFinals2.winningTeam, quarterFinals4.winningTeam, "Semifinal 2");
         }
 
-        public void RegisterFinals()
+        private void RegisterFinals()
         {
             finals = new FinalsMatch(semiFinals1.winningTeam, semiFinals2.winningTeam, "Final");
         }
 
-        public void FormatTournamentResultsForPrinting()
+        private void FormatTournamentResultsForPrinting()
         {
             resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.A);
             resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.B);
@@ -198,9 +197,9 @@ namespace FootballPredictor
             resultsPrinter.FormatWinner(finals);
         }
 
-        public void PrintTournamentResultsToFile(string fileName)
+        private void PrintTournamentResultsToFile()
         {
-            _ = resultsPrinter.PrintResultsToFile(fileName);
+            _ = resultsPrinter.PrintResultsToFile();
         }
 
     }

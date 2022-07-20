@@ -9,8 +9,10 @@ namespace FootballPredictor
 {
     class ResultsPrinter
     {
+        private const string CORRECT_FILENAME = "WomensUEFA2022Results";
         private const string CORRECT_FILE_EXTENSION = ".txt";
-        
+
+
         private string formattedOutMessage = "";
 
         public void FormatGroupMatches(List<GroupMatch> listOfMatches, Group group)
@@ -94,66 +96,13 @@ namespace FootballPredictor
             formattedWinnerString += "Vinnaren är: " + finalsMatch.GetWinningTeamName() + "\n";
 
             formattedOutMessage += formattedWinnerString;
-        }        
+        }              
 
-        
-
-        public async Task PrintResultsToFile(string fileName)
+        public async Task PrintResultsToFile()
         {
-            string textToBePrintedtext = formattedOutMessage;
+            string fileName = CORRECT_FILENAME + CORRECT_FILE_EXTENSION;
 
-            string proposedFileName = fileName;
-
-            if (fileNameHasCorrectFileExtension(proposedFileName))
-            {
-                await File.WriteAllTextAsync(proposedFileName, textToBePrintedtext);
-
-            }
-            else if (fileNameHasIncorrectFileExtension(proposedFileName))
-            {
-                string revisedFileName = changeToCorrectFileExtension(fileName);
-
-                _ = PrintResultsToFile(revisedFileName);
-            }
-            else
-            {
-                string revisedFileName = addCorrectFileExtension(fileName);
-
-                _ = PrintResultsToFile(revisedFileName);
-            }
-
-        }
-
-        
-        private bool fileNameHasCorrectFileExtension(string fileName)
-        {
-
-
-            return true;
-        }
-
-        private bool fileNameHasIncorrectFileExtension(string fileName)
-        {
-
-            return true;
-        }
-
-        private string changeToCorrectFileExtension(string fileName)
-        {
-            string adjustedFileName;
-
-
-
-            return adjustedFileName;
-        }
-
-        private string addCorrectFileExtension(string fileName)
-        {
-            string adjustedFileName;
-
-
-
-            return adjustedFileName;
+            await File.WriteAllTextAsync(fileName, formattedOutMessage);
         }
 
     }

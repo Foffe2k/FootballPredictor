@@ -17,8 +17,8 @@ namespace FootballPredictor
 
         public Team(Country country, Group startingGroup)
         {
-            name = startingGroup.ToString();
-            qualifierRank2022 = (int) startingGroup;
+            name = country.ToString();
+            qualifierRank2022 = (int) country;
             this.startingGroup = startingGroup;
             groupPlayScore = 0;
             goalsScored = 0;
