@@ -7,6 +7,9 @@ namespace FootballPredictor
 {
     class GroupMatch: Match
     {
+        private const int MINIMUM_RANDOM_GOALS = 0;
+        private const int MAXIMUM_RANDOM_GOALS = 3;
+
         public Team team1 { get; private set; }
         public Team team2 { get; private set; }
         public string matchName { get; private set; }
@@ -46,14 +49,13 @@ namespace FootballPredictor
                 ratingDifference = team2.qualifierRank2022 - team1.qualifierRank2022;
             }
         }
-
        
         private void calculateGoalsByTeam(Team currentTeam, Team opposingTeam)
         {
             int scoredGoals = 0;
             Random random = new Random();
 
-            scoredGoals += random.Next(0, 3);
+            scoredGoals += random.Next(MINIMUM_RANDOM_GOALS, MAXIMUM_RANDOM_GOALS);
             scoredGoals += RandomlyAddAddtionalGoalsWeightedByQualifierRanking(currentTeam, opposingTeam);
 
             matchResults.Add(new TeamScore(scoredGoals, currentTeam));
@@ -62,73 +64,73 @@ namespace FootballPredictor
         private int RandomlyAddAddtionalGoalsWeightedByQualifierRanking(Team currentTeam, Team opposingTeam)
         {
             Random random = new Random();
-            int fate = random.Next(0, 100);
+            int randomPercentage = random.Next(0, 100);
 
             if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
             {
-                if (fate == 100)
+                if (randomPercentage == 100)
                 {
                     return 3;
                 }
-                else if (fate >= 75)
+                else if (randomPercentage >= 75)
                 {
                     return 2;
                 }
-                else if (fate >= 50)
+                else if (randomPercentage >= 50)
                 {
                     return 2;
                 }
-                else if (fate >= 25)
+                else if (randomPercentage >= 25)
                 {
                     return 1;
                 }
-                else if (fate >= 0)
+                else if (randomPercentage >= 0)
                 {
                     return 0;
                 }
             } 
             else if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 6)
             {
-                if (fate == 100)
+                if (randomPercentage == 100)
                 {
                     return 3;
                 }
-                else if (fate >= 75)
+                else if (randomPercentage >= 75)
                 {
                     return 2;
                 }
-                else if (fate >= 50)
+                else if (randomPercentage >= 50)
                 {
                     return 1;
                 }
-                else if (fate >= 25)
+                else if (randomPercentage >= 25)
                 {
                     return 1;
                 }
-                else if (fate >= 0)
+                else if (randomPercentage >= 0)
                 {
                     return 0;
                 }
             }
             else if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 0)
             {
-                if (fate == 100)
+                if (randomPercentage == 100)
                 {
                     return 3;
                 }
-                else if (fate >= 75)
+                else if (randomPercentage >= 75)
                 {
                     return 2;
                 }
-                else if (fate >= 50)
+                else if (randomPercentage >= 50)
                 {
                     return 1;
                 }
-                else if (fate >= 25)
+                else if (randomPercentage >= 25)
                 {
                     return 0;
                 }
-                else if (fate >= 0)
+                else if (randomPercentage >= 0)
                 {
                     return 0;
                 }
@@ -136,69 +138,69 @@ namespace FootballPredictor
 
             if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
             {
-                if (fate == 100)
+                if (randomPercentage == 100)
                 {
                     return 3;
                 }
-                else if (fate >= 75)
+                else if (randomPercentage >= 75)
                 {
                     return 2;
                 }
-                else if (fate >= 50)
+                else if (randomPercentage >= 50)
                 {
                     return 1;
                 }
-                else if (fate >= 25)
+                else if (randomPercentage >= 25)
                 {
                     return 0;
                 }
-                else if (fate >= 0)
+                else if (randomPercentage >= 0)
                 {
                     return 0;
                 }
             }
             else if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 6)
             {
-                if (fate == 100)
+                if (randomPercentage == 100)
                 {
                     return 3;
                 }
-                else if (fate >= 75)
+                else if (randomPercentage >= 75)
                 {
                     return 2;
                 }
-                else if (fate >= 50)
+                else if (randomPercentage >= 50)
                 {
                     return 1;
                 }
-                else if (fate >= 25)
+                else if (randomPercentage >= 25)
                 {
                     return 1;
                 }
-                else if (fate >= 0)
+                else if (randomPercentage >= 0)
                 {
                     return 0;
                 }
             }
             else if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 0)
             {
-                if (fate == 100)
+                if (randomPercentage == 100)
                 {
                     return 3;
                 }
-                else if (fate >= 75)
+                else if (randomPercentage >= 75)
                 {
                     return 2;
                 }
-                else if (fate >= 50)
+                else if (randomPercentage >= 50)
                 {
                     return 1;
                 }
-                else if (fate >= 25)
+                else if (randomPercentage >= 25)
                 {
                     return 1;
                 }
-                else if (fate >= 0)
+                else if (randomPercentage >= 0)
                 {
                     return 0;
                 }
