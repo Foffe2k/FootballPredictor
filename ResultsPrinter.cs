@@ -67,8 +67,8 @@ namespace FootballPredictor
             string team1Name = finalsMatch.team1.name;
             string team2Name = finalsMatch.team2.name;
 
-            int team1Score = finalsMatch.GetTeamScore(finalsMatch.matchResults, team1Name);
-            int team2Score = finalsMatch.GetTeamScore(finalsMatch.matchResults, team2Name);
+            int team1Score = finalsMatch.GetTeamScore(team1Name);
+            int team2Score = finalsMatch.GetTeamScore(team2Name);
 
             formattedFinalsString += "--" + matchName + "--\n";
             formattedFinalsString += team1Name + " - " + team2Name + " : " + team1Score + " - " + team2Score + "\n";
