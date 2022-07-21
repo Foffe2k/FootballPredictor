@@ -8,7 +8,7 @@ namespace FootballPredictor
     class GroupMatch: Match
     {
         private const int MINIMUM_RANDOM_GOALS = 0;
-        private const int MAXIMUM_RANDOM_GOALS = 3;
+        private const int MAXIMUM_RANDOM_GOALS = 3; 
 
         private Random random = new Random();
 
