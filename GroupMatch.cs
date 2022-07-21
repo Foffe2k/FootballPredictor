@@ -179,7 +179,7 @@ namespace FootballPredictor
             return team.score;
         }
 
-        public string GetGroupID()
+        public Group GetGroupID()
         {
             if (team1.startingGroup.Equals(team2.startingGroup))
             {
