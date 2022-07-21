@@ -94,6 +94,7 @@ namespace FootballPredictor
 
         private int GetAdditionalGoalsForLowerRatedTeam()
         {
+            Random random = new Random();
             int randomPercentage = random.Next(1, 100);
 
             if (ratingDifference > 11)
