@@ -6,14 +6,12 @@ namespace FootballPredictor
 {
     class Team
     {    
-        public string name;
-        public int qualifierRank2022;
-        public Group startingGroup;
-        
-        public int groupPlayScore;
-        
-        public int goalsScored;
-        public int goalsConceded;
+        public string name { get; private set; }
+        public int qualifierRank2022 { get; private set; }
+        public Group startingGroup { get; private set; }        
+        public int groupPlayScore { get; set; }        
+        public int goalsScored { get; set; }
+        public int goalsConceded { get; set; }
 
         public Team(Country country, Group startingGroup)
         {
