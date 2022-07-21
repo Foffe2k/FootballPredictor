@@ -10,35 +10,31 @@ namespace FootballPredictor
         private const int MINIMUM_RANDOM_GOALS = 0;
         private const int MAXIMUM_RANDOM_GOALS = 3;
 
+        private Random random = new Random();
+
         public Team team1 { get; private set; }
         public Team team2 { get; private set; }
         public string matchName { get; private set; }
         private int ratingDifference { get; set; }
         public List<TeamScore> matchResults { get; private set; }
-        
+
+
         public GroupMatch(Country countryName1, Country countryName2, string matchName, List<Team> teamRoster)
         {
             matchResults = new List<TeamScore>();
-
-            try
-            {
-                team1 = teamRoster.Single(x => x.name.Equals(countryName1.ToString()));
-                team2 = teamRoster.Single(x => x.name.Equals(countryName2.ToString()));
-            }
-            catch (MissingTeamException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
+                        
+            team1 = teamRoster.Single(x => x.name.Equals(countryName1.ToString()));
+            team2 = teamRoster.Single(x => x.name.Equals(countryName2.ToString()));
+         
             this.matchName = matchName;
-            calculateDifferenceInRanking();
-            calculateGoalsByTeam(team1, team2);
-            calculateGoalsByTeam(team2, team1);
-            CalculateMatchPoints(matchResults);
-            AdjustGoalStatistics(matchResults);
+            CalculateDifferenceInRanking();
+            CalculateGoalsByTeam(team1, team2);
+            CalculateGoalsByTeam(team2, team1);
+            CalculateMatchPoints();
+            AdjustGoalStatistics();
         }       
 
-        private void calculateDifferenceInRanking()
+        private void CalculateDifferenceInRanking()
         {
             if(team1.qualifierRank2022 > team2.qualifierRank2022)
             {
@@ -50,10 +46,9 @@ namespace FootballPredictor
             }
         }
        
-        private void calculateGoalsByTeam(Team currentTeam, Team opposingTeam)
+        private void CalculateGoalsByTeam(Team currentTeam, Team opposingTeam)
         {
             int scoredGoals = 0;
-            Random random = new Random();
 
             scoredGoals += random.Next(MINIMUM_RANDOM_GOALS, MAXIMUM_RANDOM_GOALS);
             scoredGoals += RandomlyAddAddtionalGoalsWeightedByQualifierRanking(currentTeam, opposingTeam);
@@ -63,33 +58,14 @@ namespace FootballPredictor
 
         private int RandomlyAddAddtionalGoalsWeightedByQualifierRanking(Team currentTeam, Team opposingTeam)
         {
-            Random random = new Random();
-            int randomPercentage = random.Next(1, 100);
-
-            if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
+            
+            if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam))
             {
-                return GetAdditionalGoals(randomPercentage, 0, 1, 2, 2, 3);
-            } 
-            else if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 6)
-            {
-                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
+                return GetAddtionalGoalsForHigherRatedTeam();
             }
-            else if (CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 0)
+            else
             {
-                return GetAdditionalGoals(randomPercentage, 0, 0, 1, 2, 3);
-            }
-
-            if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 11)
-            {
-                return GetAdditionalGoals(randomPercentage, 0, 0, 1, 2, 3);
-            }
-            else if (!CurrentTeamIsRatedHigher(currentTeam, opposingTeam) && ratingDifference > 6)
-            {
-                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);                
-            }
-            else 
-            {
-                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
+                return GetAdditionalGoalsForLowerRatedTeam();
             }
         }
 
@@ -98,7 +74,41 @@ namespace FootballPredictor
             return currentTeam.qualifierRank2022 > opposingTeam.qualifierRank2022;
         }
 
-        //private int GetAddtionalGoalsForHigherRatedTeam
+        private int GetAddtionalGoalsForHigherRatedTeam()
+        {
+            int randomPercentage = random.Next(1, 100);
+
+            if (ratingDifference > 11)
+            {
+                return GetAdditionalGoals(randomPercentage, 0, 1, 2, 2, 3);
+            }
+            else if (ratingDifference > 6)
+            {
+                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
+            }
+            else 
+            {
+                return GetAdditionalGoals(randomPercentage, 0, 0, 1, 2, 3);
+            }
+        }
+
+        private int GetAdditionalGoalsForLowerRatedTeam()
+        {
+            int randomPercentage = random.Next(1, 100);
+
+            if (ratingDifference > 11)
+            {
+                return GetAdditionalGoals(randomPercentage, 0, 0, 1, 2, 3);
+            }
+            else if (ratingDifference > 6)
+            {
+                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
+            }
+            else
+            {
+                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
+            }
+        }
        
         private int GetAdditionalGoals(int randomPercentage, int mediumChance1, int mediumChance2, int mediumChance3, int mediumChance4, int veryRareChance)
         {
@@ -124,7 +134,7 @@ namespace FootballPredictor
             }
         }
 
-        private void CalculateMatchPoints(List<TeamScore> matchResults)
+        private void CalculateMatchPoints()
         {
             TeamScore ts1 = matchResults[0];
             TeamScore ts2 = matchResults[1];
@@ -147,8 +157,7 @@ namespace FootballPredictor
             }
         }
 
-
-        private void AdjustGoalStatistics(List<TeamScore> matchResults)
+        private void AdjustGoalStatistics()
         {
             Team team1 = matchResults[0].team;
             Team team2 = matchResults[1].team;
@@ -162,7 +171,7 @@ namespace FootballPredictor
             team2.goalsConceded += scoreTeam1;
         }
         
-        public int GetTeamScore(List<TeamScore> matchResults, string teamName)
+        public int GetTeamScore(string teamName)
         {
             TeamScore team = matchResults.Single(r => r.team.name.Equals(teamName));
 

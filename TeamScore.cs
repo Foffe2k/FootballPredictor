@@ -8,7 +8,7 @@ namespace FootballPredictor
     {
         public int score { get; private set; }
         
-        public Team team;
+        public Team team { get; private set; }
 
         public TeamScore(int score, Team team)
         {
