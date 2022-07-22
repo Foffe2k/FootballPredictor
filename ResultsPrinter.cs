@@ -12,13 +12,20 @@ namespace FootballPredictor
         private const string CORRECT_FILENAME = "WomensUEFA2022Results";
         private const string CORRECT_FILE_EXTENSION = ".txt";
 
+        private Tournament currentTournament;
+
         private string formattedOutMessage = "";
+
+        public ResultsPrinter(Tournament currentTurnament)
+        {
+            currentTournament = currentTurnament;
+        }
 
         public void FormatGroupMatches(List<GroupMatch> listOfMatches, Group groupID)
         {            
             string formattedGroupString = "";
 
-            List<GroupMatch> groupMatches = GetGroupMatches(listOfMatches, groupID);
+            List<GroupMatch> groupMatches = currentTournament.GetGroupMatches(groupID);
             
             groupMatches.OrderBy(m => m.matchName).ToList();
 
@@ -38,26 +45,7 @@ namespace FootballPredictor
             formattedGroupString += "\n";
 
             formattedOutMessage += formattedGroupString;
-        }
-
-        private List<GroupMatch> GetGroupMatches(List<GroupMatch> listOfMatches, Group groupID)
-        {
-            List<GroupMatch> matches = new List<GroupMatch>();
-
-            foreach (GroupMatch match in listOfMatches)
-            {
-                if (MatchIsPartOfCurrentGroup(match, groupID))
-                {
-                    matches.Add(match);
-                }
-            }
-            return matches;
-        }
-
-        private bool MatchIsPartOfCurrentGroup(GroupMatch match, Group groupID)
-        {           
-            return match.GetGroupID().Equals(groupID);
-        }
+        }      
 
         public void FormatFinalsMatches(FinalsMatch finalsMatch)
         {
