@@ -152,7 +152,7 @@ namespace FootballPredictor
             team2.goalsConceded += scoreTeam1;
         }
         
-        public int GetTeamsScore(string teamName)
+        public override int GetTeamsScore(string teamName)
         {
             TeamScore teamScore = matchResults.Single(result => result.GetTeamName().Equals(teamName));
 
