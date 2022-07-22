@@ -12,7 +12,7 @@ namespace FootballPredictor
         private const int INDEX_FOR_FIRST_TEAM = 0;
         private const int INDEX_FOR_SECOND_TEAM = 1;
 
-        private Random random = new Random();
+        private Random randomGenerator = new Random();
 
         public Team team1 { get; private set; }
         public Team team2 { get; private set; }
@@ -41,7 +41,7 @@ namespace FootballPredictor
         {
             int scoredGoals = 0;
 
-            scoredGoals += random.Next(MINIMUM_RANDOM_GOALS, MAXIMUM_RANDOM_GOALS);
+            scoredGoals += randomGenerator.Next(MINIMUM_RANDOM_GOALS, MAXIMUM_RANDOM_GOALS);
             scoredGoals += RandomlyGetAddtionalGoals();
 
             matchResults.Add(new TeamScore(scoredGoals, team));
@@ -49,29 +49,8 @@ namespace FootballPredictor
 
         private int RandomlyGetAddtionalGoals()
         {
-            int randomPercentage = random.Next(1, 100);
-
-            if (randomPercentage == 100)
-            {
-                return 3;
-            }
-            else if (randomPercentage >= 85)
-            {
-                return 2;
-            }
-            else if (randomPercentage >= 50)
-            {
-                return 1;
-            }
-            else if (randomPercentage >= 30)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
+            return GetAdditionalGoals(randomGenerator, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3);
+        }        
 
         private void SetWinner()
         {

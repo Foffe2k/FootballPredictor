@@ -16,7 +16,7 @@ namespace FootballPredictor
         private const int HIGH_DIFFERENCE_IN_RANKING = 11;
         private const int MEDIUM_DIFFERENCE_IN_RANKING = 6;
 
-        private Random random = new Random();
+        private Random randomGenerator = new Random();
 
         public Team team1 { get; private set; }
         public Team team2 { get; private set; }
@@ -59,7 +59,7 @@ namespace FootballPredictor
         {
             int scoredGoals = 0;
 
-            scoredGoals += random.Next(MINIMUM_RANDOM_GOALS, MAXIMUM_RANDOM_GOALS);
+            scoredGoals += randomGenerator.Next(MINIMUM_RANDOM_GOALS, MAXIMUM_RANDOM_GOALS);
             scoredGoals += RandomlyAddAddtionalGoalsWeightedByQualifierRanking(currentTeam, opposingTeam);
 
             matchResults.Add(new TeamScore(scoredGoals, currentTeam));
@@ -85,65 +85,36 @@ namespace FootballPredictor
 
         private int GetAddtionalGoalsForHigherRankedTeam()
         {
-            int randomPercentage = random.Next(1, 100);
-
             if (ratingDifference > HIGH_DIFFERENCE_IN_RANKING)
             {
-                return GetAdditionalGoals(randomPercentage, 0, 1, 2, 2, 3);
+                return GetAdditionalGoals(randomGenerator, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3);
             }
             else if (ratingDifference > MEDIUM_DIFFERENCE_IN_RANKING)
             {
-                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
+                return GetAdditionalGoals(randomGenerator, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2);
             }
             else 
             {
-                return GetAdditionalGoals(randomPercentage, 0, 0, 1, 2, 3);
+                return GetAdditionalGoals(randomGenerator, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2);
             }
         }
 
         private int GetAdditionalGoalsForLowerRankedTeam()
         {
-            Random random = new Random();
-            int randomPercentage = random.Next(1, 100);
-
             if (ratingDifference > HIGH_DIFFERENCE_IN_RANKING)
             {
-                return GetAdditionalGoals(randomPercentage, 0, 0, 1, 2, 3);
+                return GetAdditionalGoals(randomGenerator, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1);
             }
             else if (ratingDifference > MEDIUM_DIFFERENCE_IN_RANKING)
             {
-                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
+                return GetAdditionalGoals(randomGenerator, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2);
             }
             else
             {
-                return GetAdditionalGoals(randomPercentage, 0, 1, 1, 2, 3);
+                return GetAdditionalGoals(randomGenerator, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2);
             }
         }
        
-        private int GetAdditionalGoals(int randomPercentage, int mediumChance1, int mediumChance2, int mediumChance3, int mediumChance4, int veryRareChance)
-        {
-            if (randomPercentage == 100)
-            {
-                return veryRareChance;
-            }
-            else if (randomPercentage >= 75)
-            {
-                return mediumChance4;
-            }
-            else if (randomPercentage >= 50)
-            {
-                return mediumChance3;
-            }
-            else if (randomPercentage >= 25)
-            {
-                return mediumChance2;
-            }
-            else
-            {
-                return mediumChance1;
-            }
-        }
-
         private void AdjustMatchPoints()
         {
             TeamScore ts1 = matchResults[0];
