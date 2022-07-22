@@ -34,7 +34,7 @@ namespace FootballPredictor
             DecideOutcomeOfMatch();
         }       
 
-        private void DecideOutcomeOfMatch()
+        protected override void DecideOutcomeOfMatch()
         {
             CalculateDifferenceInRanking();
             CalculateGoalsByTeam(team1, team2);
