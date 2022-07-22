@@ -36,14 +36,14 @@ namespace FootballPredictor
 
         protected override void DecideOutcomeOfMatch()
         {
-            CalculateDifferenceInRanking();
-            CalculateGoalsByTeam(team1, team2);
-            CalculateGoalsByTeam(team2, team1);
-            CalculateMatchPoints();
+            SetDifferenceInRanking();
+            SetGoalsScoredByTeam(team1, team2);
+            SetGoalsScoredByTeam(team2, team1);
+            AdjustMatchPoints();
             AdjustGoalStatistics();
         }
 
-        private void CalculateDifferenceInRanking()
+        private void SetDifferenceInRanking()
         {
             if(team1.qualifierRank2022 > team2.qualifierRank2022)
             {
@@ -55,7 +55,7 @@ namespace FootballPredictor
             }
         }
        
-        private void CalculateGoalsByTeam(Team currentTeam, Team opposingTeam)
+        private void SetGoalsScoredByTeam(Team currentTeam, Team opposingTeam)
         {
             int scoredGoals = 0;
 
@@ -144,7 +144,7 @@ namespace FootballPredictor
             }
         }
 
-        private void CalculateMatchPoints()
+        private void AdjustMatchPoints()
         {
             TeamScore ts1 = matchResults[0];
             TeamScore ts2 = matchResults[1];
