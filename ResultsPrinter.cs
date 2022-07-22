@@ -65,7 +65,7 @@ namespace FootballPredictor
             formattedOutMessage += formattedFinalsString;
         }
 
-        public void FormatWinner(FinalsMatch finalsMatch)
+        public void FormatWinnerOfTournament(FinalsMatch finalsMatch)
         {
             string formattedWinnerString = "";
 

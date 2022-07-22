@@ -194,7 +194,7 @@ namespace FootballPredictor
             resultsPrinter.FormatFinalsMatches(semiFinals2);
 
             resultsPrinter.FormatFinalsMatches(finals);
-            resultsPrinter.FormatWinner(finals);
+            resultsPrinter.FormatWinnerOfTournament(finals);
         }
 
         private void PrintTournamentResultsToFile()
