@@ -27,18 +27,21 @@ namespace FootballPredictor
 
         public GroupMatch(Country countryName1, Country countryName2, string matchName, List<Team> teamRoster)
         {
-            matchResults = new List<TeamScore>();
-                        
+            matchResults = new List<TeamScore>();                        
             team1 = teamRoster.Single(x => x.name.Equals(countryName1.ToString()));
-            team2 = teamRoster.Single(x => x.name.Equals(countryName2.ToString()));
-         
-            this.matchName = matchName;
+            team2 = teamRoster.Single(x => x.name.Equals(countryName2.ToString()));         
+            this.matchName = matchName;            
+            DecideOutcomeOfMatch();
+        }       
+
+        private void DecideOutcomeOfMatch()
+        {
             CalculateDifferenceInRanking();
             CalculateGoalsByTeam(team1, team2);
             CalculateGoalsByTeam(team2, team1);
             CalculateMatchPoints();
             AdjustGoalStatistics();
-        }       
+        }
 
         private void CalculateDifferenceInRanking()
         {
