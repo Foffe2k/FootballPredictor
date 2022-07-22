@@ -33,13 +33,13 @@ namespace FootballPredictor
             
             foreach (GroupMatch groupMatch in groupMatches)
             {
-                string team1Name = groupMatch.team1.name;
-                string team2Name = groupMatch.team2.name;
+                string nameOfTeam1 = groupMatch.team1.name;
+                string nameOfTeam2 = groupMatch.team2.name;
                 
-                int team1Score = groupMatch.GetTeamsScore(team1Name);
-                int team2Score = groupMatch.GetTeamsScore(team2Name);
+                int goalsScoredByTeam1 = groupMatch.GetGoalsScoredInMatchByTeam(nameOfTeam1);
+                int goalsScoredByTeam2 = groupMatch.GetGoalsScoredInMatchByTeam(nameOfTeam2);
 
-                formattedGroupString += team1Name + " - " + team2Name + " : " + team1Score + " - " + team2Score + "\n";
+                formattedGroupString += nameOfTeam1 + " - " + nameOfTeam2 + " : " + goalsScoredByTeam1 + " - " + goalsScoredByTeam2 + "\n";
             }
 
             formattedGroupString += "\n";
@@ -52,14 +52,14 @@ namespace FootballPredictor
             string formattedFinalsString = "";
 
             string matchName = finalsMatch.matchName;
-            string team1Name = finalsMatch.team1.name;
-            string team2Name = finalsMatch.team2.name;
+            string nameOfTeam1 = finalsMatch.team1.name;
+            string nameOfTeam2 = finalsMatch.team2.name;
 
-            int team1Score = finalsMatch.GetTeamsScore(team1Name);
-            int team2Score = finalsMatch.GetTeamsScore(team2Name);
+            int goalsScoredByTeam1 = finalsMatch.GetGoalsScoredInMatchByTeam(nameOfTeam1);
+            int goalsScoredByTeam2 = finalsMatch.GetGoalsScoredInMatchByTeam(nameOfTeam2);
 
             formattedFinalsString += "--" + matchName + "--\n";
-            formattedFinalsString += team1Name + " - " + team2Name + " : " + team1Score + " - " + team2Score + "\n";
+            formattedFinalsString += nameOfTeam1 + " - " + nameOfTeam2 + " : " + goalsScoredByTeam1 + " - " + goalsScoredByTeam2 + "\n";
             formattedFinalsString += "\n";
 
             formattedOutMessage += formattedFinalsString;

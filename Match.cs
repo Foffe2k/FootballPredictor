@@ -7,7 +7,7 @@ namespace FootballPredictor
     abstract class Match
     {
         protected abstract void SetOutcomeOfMatch();
-        public abstract int GetTeamsScore(string teamName);
+        public abstract int GetGoalsScoredInMatchByTeam(string teamName);
 
         protected int GetAdditionalGoals(Random random, int decaOne, int decaTwo, int decaThree, int decaFour, int decaFive, int decaSix, int decaSeven, int decaEight, int decaNine, int decaTen)
         {
