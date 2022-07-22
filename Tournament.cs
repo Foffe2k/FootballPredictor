@@ -180,10 +180,10 @@ namespace FootballPredictor
 
         private void FormatTournamentResultsForPrinting()
         {
-            resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.A);
-            resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.B);
-            resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.C);
-            resultsPrinter.FormatGroupMatches(listOfGroupMatches, Group.D);
+            resultsPrinter.FormatGroupMatches(Group.A);
+            resultsPrinter.FormatGroupMatches(Group.B);
+            resultsPrinter.FormatGroupMatches(Group.C);
+            resultsPrinter.FormatGroupMatches(Group.D);
 
             resultsPrinter.FormatFinalsMatches(quarterFinals1);
             resultsPrinter.FormatFinalsMatches(quarterFinals2);

@@ -16,12 +16,12 @@ namespace FootballPredictor
 
         private string formattedOutMessage = "";
 
-        public ResultsPrinter(Tournament currentTurnament)
+        public ResultsPrinter(Tournament tournament)
         {
-            currentTournament = currentTurnament;
+            currentTournament = tournament;
         }
 
-        public void FormatGroupMatches(List<GroupMatch> listOfMatches, Group groupID)
+        public void FormatGroupMatches(Group groupID)
         {            
             string formattedGroupString = "";
 
