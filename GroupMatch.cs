@@ -31,10 +31,10 @@ namespace FootballPredictor
             team1 = teamRoster.Single(x => x.name.Equals(countryName1.ToString()));
             team2 = teamRoster.Single(x => x.name.Equals(countryName2.ToString()));         
             this.matchName = matchName;            
-            DecideOutcomeOfMatch();
+            SetOutcomeOfMatch();
         }       
 
-        protected override void DecideOutcomeOfMatch()
+        protected override void SetOutcomeOfMatch()
         {
             SetDifferenceInRanking();
             SetGoalsScoredByTeam(team1, team2);

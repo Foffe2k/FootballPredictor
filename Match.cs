@@ -6,6 +6,6 @@ namespace FootballPredictor
 {
     abstract class Match
     {
-        protected abstract void DecideOutcomeOfMatch();
+        protected abstract void SetOutcomeOfMatch();
     }
 }

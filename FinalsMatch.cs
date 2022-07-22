@@ -27,17 +27,17 @@ namespace FootballPredictor
             this.team2 = team2;
             this.matchName = matchName;
             matchResults = new List<TeamScore>();
-            DecideOutcomeOfMatch();            
+            SetOutcomeOfMatch();            
         }
 
-        protected override void DecideOutcomeOfMatch()
+        protected override void SetOutcomeOfMatch()
         {
-            CalculateGoalsByTeam(team1);
-            CalculateGoalsByTeam(team2);
-            CalculateWinner();
+            SetGoalsByTeam(team1);
+            SetGoalsByTeam(team2);
+            SetWinner();
         }
 
-        private void CalculateGoalsByTeam(Team team)
+        private void SetGoalsByTeam(Team team)
         {
             int scoredGoals = 0;
 
@@ -73,7 +73,7 @@ namespace FootballPredictor
             }
         }
 
-        private void CalculateWinner()
+        private void SetWinner()
         {
             if (MatchIsADraw())
             {
@@ -96,7 +96,7 @@ namespace FootballPredictor
         private void RedoMatchOutcome()
         {
             matchResults.Clear();
-            DecideOutcomeOfMatch();
+            SetOutcomeOfMatch();
         }
 
         private void SetWinningAndLosingTeam()
