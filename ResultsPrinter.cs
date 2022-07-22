@@ -14,7 +14,7 @@ namespace FootballPredictor
 
         private Tournament currentTournament;
 
-        private string formattedOutMessage = "";
+        private string formattedOutMessage;
 
         public ResultsPrinter(Tournament tournament)
         {
