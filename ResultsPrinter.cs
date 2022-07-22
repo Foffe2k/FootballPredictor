@@ -29,8 +29,8 @@ namespace FootballPredictor
                 string team1Name = groupMatch.team1.name;
                 string team2Name = groupMatch.team2.name;
                 
-                int team1Score = groupMatch.GetTeamScore(team1Name);
-                int team2Score = groupMatch.GetTeamScore(team2Name);
+                int team1Score = groupMatch.GetTeamsScore(team1Name);
+                int team2Score = groupMatch.GetTeamsScore(team2Name);
 
                 formattedGroupString += team1Name + " - " + team2Name + " : " + team1Score + " - " + team2Score + "\n";
             }
