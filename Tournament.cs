@@ -115,24 +115,24 @@ namespace FootballPredictor
             List<Team> groupC = GetTeamsInGroup(Group.C);
             List<Team> groupD = GetTeamsInGroup(Group.D);
 
-            winnerGroupA = FindGroupWinner(groupA);
-            winnerGroupB = FindGroupWinner(groupB);
-            winnerGroupC = FindGroupWinner(groupC);
-            winnerGroupD = FindGroupWinner(groupD);
+            winnerGroupA = SetGroupWinner(groupA);
+            winnerGroupB = SetGroupWinner(groupB);
+            winnerGroupC = SetGroupWinner(groupC);
+            winnerGroupD = SetGroupWinner(groupD);
 
-            runnerUpGroupA = FindGroupRunnerUp(groupA);
-            runnerUpGroupB = FindGroupRunnerUp(groupB);
-            runnerUpGroupC = FindGroupRunnerUp(groupC);
-            runnerUpGroupD = FindGroupRunnerUp(groupD);
+            runnerUpGroupA = SetGroupRunnerUp(groupA);
+            runnerUpGroupB = SetGroupRunnerUp(groupB);
+            runnerUpGroupC = SetGroupRunnerUp(groupC);
+            runnerUpGroupD = SetGroupRunnerUp(groupD);
         }
 
-        private List<Team> GetTeamsInGroup(Group group)
+        private List<Team> GetTeamsInGroup(Group groupID)
         {
             List<Team> groupMembers = new List<Team>();
 
             foreach (Team team in listOfParticipatingTeams)
             {
-                if (team.startingGroup.Equals(group))
+                if (team.startingGroup.Equals(groupID))
                 {
                     groupMembers.Add(team);
                 }
@@ -141,23 +141,24 @@ namespace FootballPredictor
             return groupMembers;
         }
         
-        private Team FindGroupWinner(List<Team> group)
+        private Team SetGroupWinner(List<Team> listOfTeamsInGroup)
         {
-            SortGroupAccordingToGroupVictoryCriteria(group);
+            OrderGroupAccordingToGroupVictoryCriteria(listOfTeamsInGroup);
 
             return group[INDEX_OF_GROUP_WINNER];
         }
 
-        private void SortGroupAccordingToGroupVictoryCriteria(List<Team> group)
+        private void OrderGroupAccordingToGroupVictoryCriteria(List<Team> listOfTeamsInGroup)
         {
-            group.OrderBy(team => team.groupPlayScore).
-                   ThenBy(team => team.GetGoalDifference()).
-                   ThenBy(team => team.qualifierRank2022);
+            listOfTeamsInGroup.OrderBy(team => team.groupPlayScore).
+                               ThenBy(team => team.GetGoalDifference()).
+                               ThenBy(team => team.qualifierRank2022).
+                               ToList();
         }
 
-        private Team FindGroupRunnerUp(List<Team> group)
+        private Team SetGroupRunnerUp(List<Team> listOfTeamsInGroup)
         {
-            SortGroupAccordingToGroupVictoryCriteria(group);
+            OrderGroupAccordingToGroupVictoryCriteria(listOfTeamsInGroup);
 
             return group[INDEX_OF_GROUP_RUNNER_UP];
         }

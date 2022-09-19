@@ -95,7 +95,7 @@ namespace FootballPredictor
             }
         }
 
-        public int GetTeamScore(string teamName)
+        public override int GetGoalsScoredInMatchByTeam(string teamName)
         {
             TeamScore teamScore = matchResults.Single(result => result.GetTeamName().Equals(teamName));
 

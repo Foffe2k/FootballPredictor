@@ -25,11 +25,11 @@ namespace FootballPredictor
         public List<TeamScore> matchResults { get; private set; }
 
 
-        public GroupMatch(Country countryName1, Country countryName2, string matchName, List<Team> teamRoster)
+        public GroupMatch(Country countryName1, Country countryName2, string matchName, List<Team> participatingTeams)
         {
             matchResults = new List<TeamScore>();                        
-            team1 = teamRoster.Single(x => x.name.Equals(countryName1.ToString()));
-            team2 = teamRoster.Single(x => x.name.Equals(countryName2.ToString()));         
+            team1 = participatingTeams.Single(x => x.name.Equals(countryName1.ToString()));
+            team2 = participatingTeams.Single(x => x.name.Equals(countryName2.ToString()));         
             this.matchName = matchName;            
             SetOutcomeOfMatch();
         }       
@@ -117,8 +117,8 @@ namespace FootballPredictor
        
         private void AdjustMatchPoints()
         {
-            TeamScore ts1 = matchResults[0];
-            TeamScore ts2 = matchResults[1];
+            TeamScore ts1 = matchResults[INDEX_FOR_FIRST_TEAM];
+            TeamScore ts2 = matchResults[INDEX_FOR_SECOND_TEAM];
 
             int scoreTeam1 = ts1.score;
             int scoreTeam2 = ts2.score;
@@ -152,9 +152,9 @@ namespace FootballPredictor
             team2.goalsConceded += scoreTeam1;
         }
         
-        public int GetTeamsScore(string teamName)
+        public override int GetGoalsScoredInMatchByTeam(string teamName)
         {
-            TeamScore teamScore = matchResults.Single(result => result.team.name.Equals(teamName));
+            TeamScore teamScore = matchResults.Single(result => result.GetTeamName().Equals(teamName));
 
             return teamScore.score;
         }
