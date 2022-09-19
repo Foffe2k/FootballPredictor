@@ -38,6 +38,7 @@ namespace FootballPredictor
         {
             listOfParticipatingTeams = new List<Team>();
             listOfGroupMatches = new List<GroupMatch>();
+            listOfFinalsMatches = new List<FinalsMatch>();
             resultsPrinter = new ResultsPrinter(this);  
             
             SetCompetingTeams();
@@ -145,7 +146,7 @@ namespace FootballPredictor
         {
             OrderGroupAccordingToGroupVictoryCriteria(listOfTeamsInGroup);
 
-            return group[INDEX_OF_GROUP_WINNER];
+            return listOfTeamsInGroup[INDEX_OF_GROUP_WINNER];
         }
 
         private void OrderGroupAccordingToGroupVictoryCriteria(List<Team> listOfTeamsInGroup)
@@ -160,7 +161,7 @@ namespace FootballPredictor
         {
             OrderGroupAccordingToGroupVictoryCriteria(listOfTeamsInGroup);
 
-            return group[INDEX_OF_GROUP_RUNNER_UP];
+            return listOfTeamsInGroup[INDEX_OF_GROUP_RUNNER_UP];
         }
 
         private void SetQuarterFinals()
@@ -169,17 +170,26 @@ namespace FootballPredictor
             quarterFinals2 = new FinalsMatch(winnerGroupB, runnerUpGroupA, "Kvartsfinal 2");
             quarterFinals3 = new FinalsMatch(winnerGroupC, runnerUpGroupD, "Kvartsfinal 3");
             quarterFinals4 = new FinalsMatch(winnerGroupD, runnerUpGroupC, "Kvartsfinal 4");
+
+            listOfFinalsMatches.Add(quarterFinals1);
+            listOfFinalsMatches.Add(quarterFinals2);
+            listOfFinalsMatches.Add(quarterFinals3);
+            listOfFinalsMatches.Add(quarterFinals4);
         }
 
         private void SetSemiFinals()
         {
             semiFinals1 = new FinalsMatch(quarterFinals1.winningTeam, quarterFinals3.winningTeam, "Semifinal 1");
             semiFinals2 = new FinalsMatch(quarterFinals2.winningTeam, quarterFinals4.winningTeam, "Semifinal 2");
+
+            listOfFinalsMatches.Add(semiFinals1);
+            listOfFinalsMatches.Add(semiFinals2);
         }
 
         private void SetFinals()
         {
             finals = new FinalsMatch(semiFinals1.winningTeam, semiFinals2.winningTeam, "Final");
+            listOfFinalsMatches.Add(finals);
         }
 
         private void FormatTournamentResultsForPrinting()

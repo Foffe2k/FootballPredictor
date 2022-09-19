@@ -31,18 +31,9 @@ namespace FootballPredictor
             FormatGroupMatches(listOfGroupMatches, Group.C);
             FormatGroupMatches(listOfGroupMatches, Group.D);
 
-            FormateFinalsMatches(listOfFinalsMatches); //TODO Logik för att formatera finalmatcherna. Loopa igenom listan och för varje iterations körs FormatGroupMatch
+            FormatFinalsMatches(listOfFinalsMatches); 
 
-            FormatFinalsMatches(quarterFinals1);
-            FormatFinalsMatches(quarterFinals2);
-            FormatFinalsMatches(quarterFinals3);
-            FormatFinalsMatches(quarterFinals4);
-
-            FormatFinalsMatches(semiFinals1);
-            FormatFinalsMatches(semiFinals2);
-
-            FormatFinalsMatches(finals);
-            FormatWinnerOfTournament(finals);
+            FormatWinnerOfTournament(listOfFinalsMatches);
         }
 
         private void FormatGroupMatches(List<GroupMatch> listOfGroupMatches, Group groupID)
@@ -90,10 +81,14 @@ namespace FootballPredictor
             return match.GetGroupID().Equals(groupID);
         }
 
-        private void FormateFinalsMatches(List<FinalsMatch> listOfFinalsMatches) 
+        private void FormatFinalsMatches(List<FinalsMatch> listOfFinalsMatches) 
         {
-
+            foreach (FinalsMatch match in listOfFinalsMatches)
+            {
+                FormatFinalsMatch(match);
+            }
         }
+
         private void FormatFinalsMatch(FinalsMatch finalsMatch)
         {
             string formattedFinalsString = "";
@@ -112,14 +107,17 @@ namespace FootballPredictor
             formattedOutMessage += formattedFinalsString;
         }
 
-        private void FormatWinnerOfTournament(FinalsMatch finalsMatch)
+        private void FormatWinnerOfTournament(List<FinalsMatch> listOfFinalsMatches)
         {
+            FinalsMatch finalMatch = listOfFinalsMatches.Single(result => result.matchName.Equals("Final"));
+
             string formattedWinnerString = "";
 
-            formattedWinnerString += "Vinnaren är: " + finalsMatch.GetWinningTeamName() + "\n";
+            formattedWinnerString += "Vinnaren är: " + finalMatch.GetWinningTeamName() + "\n";
 
             formattedOutMessage += formattedWinnerString;
-        }              
+        } 
+       
 
         public async Task PrintResultsToFile()
         {

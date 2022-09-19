@@ -117,8 +117,8 @@ namespace FootballPredictor
        
         private void AdjustMatchPoints()
         {
-            TeamScore ts1 = matchResults[INDEX_FOR_FIRST_TEAM];
-            TeamScore ts2 = matchResults[INDEX_FOR_SECOND_TEAM];
+            TeamScore ts1 = matchResults[INDEX_OF_FIRST_TEAM];
+            TeamScore ts2 = matchResults[INDEX_OF_SECOND_TEAM];
 
             int scoreTeam1 = ts1.score;
             int scoreTeam2 = ts2.score;
