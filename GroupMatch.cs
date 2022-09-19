@@ -11,8 +11,8 @@ namespace FootballPredictor
         private const int MAXIMUM_RANDOM_GOALS = 3;
         private const int POINTS_AWARDED_FOR_WIN = 3;
         private const int POINTS_AWARDED_FOR_DRAW = 1;
-        private const int INDEX_FOR_FIRST_TEAM = 0;
-        private const int INDEX_FOR_SECOND_TEAM = 1;
+        private const int INDEX_OF_FIRST_TEAM = 0;
+        private const int INDEX_OF_SECOND_TEAM = 1;
         private const int HIGH_DIFFERENCE_IN_RANKING = 11;
         private const int MEDIUM_DIFFERENCE_IN_RANKING = 6;
 
@@ -140,11 +140,11 @@ namespace FootballPredictor
 
         private void AdjustGoalStatistics()
         {
-            Team team1 = matchResults[INDEX_FOR_FIRST_TEAM].team;
-            Team team2 = matchResults[INDEX_FOR_SECOND_TEAM].team;
+            Team team1 = matchResults[INDEX_OF_FIRST_TEAM].team;
+            Team team2 = matchResults[INDEX_OF_SECOND_TEAM].team;
 
-            int scoreTeam1 = matchResults[INDEX_FOR_FIRST_TEAM].score;
-            int scoreTeam2 = matchResults[INDEX_FOR_SECOND_TEAM].score;
+            int scoreTeam1 = matchResults[INDEX_OF_FIRST_TEAM].score;
+            int scoreTeam2 = matchResults[INDEX_OF_SECOND_TEAM].score;
 
             team1.goalsScored += scoreTeam1;
             team1.goalsConceded += scoreTeam2;

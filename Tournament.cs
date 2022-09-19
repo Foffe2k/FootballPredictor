@@ -9,8 +9,11 @@ namespace FootballPredictor
 {
     class Tournament
     {
+        private const int INDEX_OF_GROUP_WINNER = 0;
+        private const int INDEX_OF_GROUP_RUNNER_UP = 1;
         private List<Team> listOfParticipatingTeams { get; set; }
         private List<GroupMatch> listOfGroupMatches { get; set; }
+        private List<FinalsMatch> listOfFinalsMatches { get; set; }
         private FinalsMatch quarterFinals1 { get; set; }
         private FinalsMatch quarterFinals2 { get; set; }
         private FinalsMatch quarterFinals3 { get; set; }
@@ -142,7 +145,7 @@ namespace FootballPredictor
         {
             SortGroupAccordingToGroupVictoryCriteria(group);
 
-            return group[0];
+            return group[INDEX_OF_GROUP_WINNER];
         }
 
         private void SortGroupAccordingToGroupVictoryCriteria(List<Team> group)
@@ -156,7 +159,7 @@ namespace FootballPredictor
         {
             SortGroupAccordingToGroupVictoryCriteria(group);
 
-            return group[1];
+            return group[INDEX_OF_GROUP_RUNNER_UP];
         }
 
         private void SetQuarterFinals()
@@ -180,6 +183,10 @@ namespace FootballPredictor
 
         private void FormatTournamentResultsForPrinting()
         {
+
+            resultsPrinter.FormatTournamentResults(listOfGroupMatches, listOfFinalsMatches);
+
+            /*
             resultsPrinter.FormatGroupMatches(Group.A);
             resultsPrinter.FormatGroupMatches(Group.B);
             resultsPrinter.FormatGroupMatches(Group.C);
@@ -195,6 +202,7 @@ namespace FootballPredictor
 
             resultsPrinter.FormatFinalsMatches(finals);
             resultsPrinter.FormatWinnerOfTournament(finals);
+            */
         }
 
         private void PrintTournamentResultsToFile()
@@ -202,24 +210,9 @@ namespace FootballPredictor
             _ = resultsPrinter.PrintResultsToFile();
         }
 
-        public List<GroupMatch> GetGroupMatches(Group groupID)
-        {
-            List<GroupMatch> matches = new List<GroupMatch>();
+    
 
-            foreach (GroupMatch match in listOfGroupMatches)
-            {
-                if (MatchIsPartOfCurrentGroup(match, groupID))
-                {
-                    matches.Add(match);
-                }
-            }
-            return matches;
-        }
-
-        private bool MatchIsPartOfCurrentGroup(GroupMatch match, Group groupID)
-        {
-            return match.GetGroupID().Equals(groupID);
-        }
+      
 
     }
 }

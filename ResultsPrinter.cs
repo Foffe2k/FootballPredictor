@@ -12,6 +12,8 @@ namespace FootballPredictor
         private const string CORRECT_FILENAME = "WomensUEFA2022Results";
         private const string CORRECT_FILE_EXTENSION = ".txt";
 
+        private string fileName;
+
         private Tournament currentTournament;
 
         private string formattedOutMessage;
@@ -19,13 +21,35 @@ namespace FootballPredictor
         public ResultsPrinter(Tournament tournament)
         {
             currentTournament = tournament;
+            fileName = CORRECT_FILENAME + CORRECT_FILE_EXTENSION;
         }
 
-        public void FormatGroupMatches(Group groupID)
+        public void FormatTournamentResults(List<GroupMatch> listOfGroupMatches, List<FinalsMatch> listOfFinalsMatches)
+        {
+            FormatGroupMatches(listOfGroupMatches, Group.A);
+            FormatGroupMatches(listOfGroupMatches, Group.B);
+            FormatGroupMatches(listOfGroupMatches, Group.C);
+            FormatGroupMatches(listOfGroupMatches, Group.D);
+
+            FormateFinalsMatches(listOfFinalsMatches); //TODO Logik för att formatera finalmatcherna. Loopa igenom listan och för varje iterations körs FormatGroupMatch
+
+            FormatFinalsMatches(quarterFinals1);
+            FormatFinalsMatches(quarterFinals2);
+            FormatFinalsMatches(quarterFinals3);
+            FormatFinalsMatches(quarterFinals4);
+
+            FormatFinalsMatches(semiFinals1);
+            FormatFinalsMatches(semiFinals2);
+
+            FormatFinalsMatches(finals);
+            FormatWinnerOfTournament(finals);
+        }
+
+        private void FormatGroupMatches(List<GroupMatch> listOfGroupMatches, Group groupID)
         {            
             string formattedGroupString = "";
 
-            List<GroupMatch> groupMatches = currentTournament.GetGroupMatches(groupID);
+            List<GroupMatch> groupMatches = GetGroupMatches(listOfGroupMatches, groupID);
             
             groupMatches.OrderBy(m => m.matchName).ToList();
 
@@ -45,9 +69,32 @@ namespace FootballPredictor
             formattedGroupString += "\n";
 
             formattedOutMessage += formattedGroupString;
-        }      
+        }
 
-        public void FormatFinalsMatches(FinalsMatch finalsMatch)
+        private List<GroupMatch> GetGroupMatches(List<GroupMatch> listOfGroupMatches, Group groupID)
+        {
+            List<GroupMatch> matches = new List<GroupMatch>();
+
+            foreach (GroupMatch match in listOfGroupMatches)
+            {
+                if (MatchIsPartOfCurrentGroup(match, groupID))
+                {
+                    matches.Add(match);
+                }
+            }
+            return matches;
+        }
+
+        private bool MatchIsPartOfCurrentGroup(GroupMatch match, Group groupID)
+        {
+            return match.GetGroupID().Equals(groupID);
+        }
+
+        private void FormateFinalsMatches(List<FinalsMatch> listOfFinalsMatches) 
+        {
+
+        }
+        private void FormatFinalsMatch(FinalsMatch finalsMatch)
         {
             string formattedFinalsString = "";
 
@@ -65,7 +112,7 @@ namespace FootballPredictor
             formattedOutMessage += formattedFinalsString;
         }
 
-        public void FormatWinnerOfTournament(FinalsMatch finalsMatch)
+        private void FormatWinnerOfTournament(FinalsMatch finalsMatch)
         {
             string formattedWinnerString = "";
 
@@ -76,8 +123,6 @@ namespace FootballPredictor
 
         public async Task PrintResultsToFile()
         {
-            string fileName = CORRECT_FILENAME + CORRECT_FILE_EXTENSION;
-
             await File.WriteAllTextAsync(fileName, formattedOutMessage);
         }
 
